@@ -1,12 +1,17 @@
-use crate::terminal::Terminal;
+use crate::{projects::Projects, terminal::Terminal};
 use leptos::prelude::*;
 
 #[component]
 pub fn App() -> impl IntoView {
     view! {
         <div class="mx-auto max-w-250 px-4">
-            <Header />
-            <Terminal />
+            <div class="min-h-dvh flex flex-col">
+                <Header />
+                <div class="flex-1 flex items-center">
+                    <Terminal />
+                </div>
+            </div>
+            <Projects />
             <Hr />
             <Footer />
         </div>
@@ -14,7 +19,7 @@ pub fn App() -> impl IntoView {
 }
 
 #[component]
-fn Hr() -> impl IntoView {
+pub fn Hr() -> impl IntoView {
     view! { <hr class="border-line my-1" /> }
 }
 
@@ -25,9 +30,9 @@ fn Header() -> impl IntoView {
             <p>relaforg<span class="text-accent-500">@</span>dev</p>
             <div class="flex items-center gap-5">
                 <nav class="flex items-center gap-5">
-                    <a href="#">"projects"</a>
-                    <a href="#">"repos"</a>
-                    <a href="#">"contact"</a>
+                    <a href="#projects">"projects"</a>
+                    <a href="#repos">"repos"</a>
+                    <a href="#contact">"contact"</a>
                 </nav>
                 <button class="py-1 px-3 border border-line rounded-sm cursor-pointer">
                     "FR / en"

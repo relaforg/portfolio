@@ -3,7 +3,7 @@ use leptos::prelude::*;
 #[component]
 pub fn Terminal() -> impl IntoView {
     view! {
-        <div class="h-150 border-2 border-line rounded-md bg-linear-to-t from-bg to-surface from-70%">
+        <div class="h-150 border-2 border-line rounded-md bg-linear-to-t from-bg to-surface from-70% w-full">
             <TerminalHeader />
             <div class="mx-5 my-2 flex items-center">
                 <span class="text-accent-500">"➜ ~"</span>
