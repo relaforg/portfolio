@@ -53,30 +53,55 @@ pub fn Projects() -> impl IntoView {
             "// PROJETS MIS EN AVANT"
         </h2>
         <Hr />
-        <p>
-            {projects
-                .into_iter()
-                .map(|n| {
-                    view! {
-                        <ProjectView project=n />
-                        <Hr />
-                    }
-                })
-                .collect_view()}
-        </p>
+        {projects
+            .into_iter()
+            .map(|n| {
+                view! {
+                    <ProjectView project=n />
+                    <Hr />
+                }
+            })
+            .collect_view()}
     }
 }
 
 #[component]
 fn ProjectView(project: Project) -> impl IntoView {
     view! {
-        <div class="flex justify-between items-end my-5">
-            <div class="flex items-end gap-2">
-                <h3 class="text-3xl">{move || project.name.clone()}</h3>
-                <p class="text-neutral-500">{move || project.role.clone()}</p>
+        <div class="my-10">
+            <div class="flex justify-between items-end my-5">
+                <div class="flex items-end gap-2">
+                    <h3 class="text-3xl">{project.name}</h3>
+                    <p class="text-neutral-500">{project.role}</p>
+                </div>
+                <span class="text-neutral-500">{project.techs.join(" · ")}</span>
             </div>
-            <span class="text-neutral-500">{move || project.techs.join(" · ")}</span>
+            <p class="max-w-85/100">{project.description}</p>
+            <div class="flex gap-2 my-4">
+                {project
+                    .topics
+                    .into_iter()
+                    .map(|topic| {
+                        view! {
+                            <span class="border border-accent-500 rounded-md text-accent-500 px-3 py-1 text-sm">
+                                {topic}
+                            </span>
+                        }
+                    })
+                    .collect_view()}
+            </div>
+            <a
+                rel="external"
+                href=project.github_link
+                class="border border-line rounded-md px-3 py-1 text-sm"
+            >
+                {project
+                    .github_link
+                    .strip_prefix("https://")
+                    .unwrap_or(&project.github_link)
+                    .to_string()}
+                " ➜ "
+            </a>
         </div>
-        <p class="max-w-85/100">{move || project.description.clone()}</p>
     }
 }
