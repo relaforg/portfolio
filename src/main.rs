@@ -1,5 +1,6 @@
 mod app;
 mod projects;
+mod repos;
 mod terminal;
 
 use app::*;

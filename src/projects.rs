@@ -49,7 +49,7 @@ fn get_projects() -> Vec<Project> {
 pub fn Projects() -> impl IntoView {
     let projects = get_projects();
     view! {
-        <h2 id="projects" class="my-3">
+        <h2 id="projects" class="my-3 text-neutral-500">
             "// PROJETS MIS EN AVANT"
         </h2>
         <Hr />

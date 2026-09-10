@@ -5,5 +5,7 @@ edition = "2024"
 
 [dependencies]
 console_error_panic_hook = "0.1.7"
+gloo-net = "0.7.0"
 js-sys = "0.3.105"
 leptos = { version = "0.8.20", features = ["csr"] }
+serde = "1.0.229"

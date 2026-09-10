@@ -1,4 +1,4 @@
-use crate::{projects::Projects, terminal::Terminal};
+use crate::{projects::Projects, repos::Repos, terminal::Terminal};
 use leptos::prelude::*;
 
 #[component]
@@ -12,6 +12,7 @@ pub fn App() -> impl IntoView {
                 </div>
             </div>
             <Projects />
+            <Repos />
             <Hr />
             <Footer />
         </div>
