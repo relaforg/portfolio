@@ -1,16 +1,25 @@
+use crate::terminal::Terminal;
 use leptos::prelude::*;
 
 #[component]
 pub fn App() -> impl IntoView {
     view! {
         <div class="mx-auto max-w-250 px-4">
-            <Nav />
+            <Header />
+            <Terminal />
+            <Hr />
+            <Footer />
         </div>
     }
 }
 
 #[component]
-fn Nav() -> impl IntoView {
+fn Hr() -> impl IntoView {
+    view! { <hr class="border-line my-1" /> }
+}
+
+#[component]
+fn Header() -> impl IntoView {
     view! {
         <header class="py-6 flex justify-between items-center">
             <p>relaforg<span class="text-accent-500">@</span>dev</p>
@@ -50,5 +59,16 @@ fn Nav() -> impl IntoView {
                 </button>
             </div>
         </header>
+    }
+}
+
+#[component]
+fn Footer() -> impl IntoView {
+    view! {
+        <div class="flex justify-between my-4">
+            <p>Rémi Laforgue</p>
+            // reccuperer l'année en cours
+            <p>2026</p>
+        </div>
     }
 }
