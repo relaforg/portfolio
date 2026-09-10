@@ -5,6 +5,11 @@ pub fn Terminal() -> impl IntoView {
     view! {
         <div class="h-150 border-2 border-line rounded-md bg-linear-to-t from-bg to-surface from-70%">
             <TerminalHeader />
+            <div class="mx-5 my-2 flex items-center">
+                <span class="text-accent-500">"➜ ~"</span>
+                <input type="text" class="mx-2 focus:outline-hidden flex-1" />
+                <div class="w-1.5 h-3 bg-accent-500 animate-blink"></div>
+            </div>
         </div>
     }
 }
