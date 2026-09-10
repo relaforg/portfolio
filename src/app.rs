@@ -69,11 +69,11 @@ fn Header() -> impl IntoView {
 
 #[component]
 fn Footer() -> impl IntoView {
+    let year = js_sys::Date::new_0().get_full_year();
     view! {
         <div class="flex justify-between my-4">
             <p>Rémi Laforgue</p>
-            // reccuperer l'année en cours
-            <p>2026</p>
+            <p>{year}</p>
         </div>
     }
 }
