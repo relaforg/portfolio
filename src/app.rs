@@ -9,8 +9,8 @@ pub fn App() -> impl IntoView {
         <I18nContextProvider>
             <BgAnim />
             <div class="mx-auto max-w-250 px-4">
+                <Header />
                 <div class="min-h-dvh flex flex-col snap-start">
-                    <Header />
                     <div class="flex-1 flex items-center">
                         <Terminal />
                     </div>
@@ -18,7 +18,7 @@ pub fn App() -> impl IntoView {
                         <Chevron />
                     </div>
                 </div>
-                <div class="snap-start scroll-mt-8">
+                <div class="snap-start snap-always scroll-mt-25">
                     <Projects />
                     <Repos />
                     <Hr />
@@ -144,12 +144,12 @@ fn Header() -> impl IntoView {
 
     view! {
         <Html attr:data-theme=get_theme attr:class="snap-y snap-mandatory" />
-        <header class="py-6 flex justify-between items-center">
+        <header class="p-6 flex justify-between items-center sticky top-1 z-10 isolate">
+            <div class="absolute bg-surface/30 backdrop-blur-xl -inset-x-4 -inset-y-0 -z-1 mask-x-from-[calc(100%-1rem)] mask-y-from-[calc(100%-1rem)]"></div>
             <p>relaforg<span class="text-accent-500">@</span>dev</p>
             <div class="flex items-center gap-5">
                 <nav class="flex items-center gap-5">
                     <a href="#projects">{t!(i18n, header.projects)}</a>
-                    // <a href="#repos">{t!(i18n, header.activity)}</a>
                     <a href="#contact">"contact"</a>
                 </nav>
                 <button
