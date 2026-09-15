@@ -83,7 +83,7 @@ fn ProjectView(project: Project) -> impl IntoView {
                     .into_iter()
                     .map(|topic| {
                         view! {
-                            <span class="border border-accent-500 rounded-md text-accent-500 px-3 py-1 text-sm">
+                            <span class="border border-accent-500 rounded-md text-accent-500 px-3 py-1 text-xs">
                                 {topic}
                             </span>
                         }
@@ -93,7 +93,7 @@ fn ProjectView(project: Project) -> impl IntoView {
             <a
                 rel="external"
                 href=project.github_link
-                class="border border-line rounded-md px-3 py-1 text-sm"
+                class="border border-line rounded-md px-3 py-1 text-xs hover:bg-surface hover:text-accent-200"
             >
                 {project
                     .github_link
