@@ -7,6 +7,7 @@ use leptos_meta::Html;
 pub fn App() -> impl IntoView {
     view! {
         <I18nContextProvider>
+            <BgAnim />
             <div class="mx-auto max-w-250 px-4">
                 <div class="min-h-dvh flex flex-col">
                     <Header />
@@ -22,6 +23,23 @@ pub fn App() -> impl IntoView {
                 <Footer />
             </div>
         </I18nContextProvider>
+    }
+}
+
+#[component]
+fn BgAnim() -> impl IntoView {
+    view! {
+        <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-1 overflow-hidden">
+            <div class="absolute -top-[18vh] -left-[8vw] h-[62vw] w-[62vw] min-h-[420px] min-w-[420px]
+            rounded-full opacity-30 blur-[90px] will-change-transform animate-drift-a
+            bg-[radial-gradient(circle_at_50%_50%,#80a0ff_0%,transparent_68%)]"></div>
+            <div class="absolute -right-[10vw] -bottom-[22vh] h-[55vw] w-[55vw] min-h-[380px] min-w-[380px]
+            rounded-full opacity-25 blur-[100px] will-change-transform animate-drift-b
+            bg-[radial-gradient(circle_at_50%_50%,#74b2ff_0%,transparent_66%)]"></div>
+            <div class="absolute top-[34vh] left-[42vw] h-[44vw] w-[44vw] min-h-[320px] min-w-[320px]
+            rounded-full opacity-15 blur-[110px] will-change-transform animate-drift-c
+            bg-[radial-gradient(circle_at_50%_50%,#adadf3_0%,transparent_70%)]"></div>
+        </div>
     }
 }
 
