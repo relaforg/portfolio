@@ -15,7 +15,7 @@ struct Repo {
 }
 
 async fn fetch_repos() -> Result<Vec<Repo>, gloo_net::Error> {
-    Request::get("shttps://api.github.com/users/relaforg/repos?sort=updated&per_page=20")
+    Request::get("https://api.github.com/users/relaforg/repos?sort=updated&per_page=20")
         .send()
         .await?
         .json()

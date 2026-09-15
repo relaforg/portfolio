@@ -2,3 +2,7 @@
 @source "./src/**/*.rs";
 
 @import "./moonfly.css" layer(theme);
+
+ html {
+  scroll-behavior: smooth;
+}

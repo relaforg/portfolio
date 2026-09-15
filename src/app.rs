@@ -9,18 +9,23 @@ pub fn App() -> impl IntoView {
         <I18nContextProvider>
             <BgAnim />
             <div class="mx-auto max-w-250 px-4">
-                <div class="min-h-dvh flex flex-col">
+                <div class="min-h-dvh flex flex-col snap-start">
                     <Header />
                     <div class="flex-1 flex items-center">
                         <Terminal />
                     </div>
+                    <div class="flex justify-center">
+                        <Chevron />
+                    </div>
                 </div>
-                <Projects />
-                <Repos />
-                <Hr />
-                <Contact />
-                <Hr />
-                <Footer />
+                <div class="snap-start scroll-mt-8">
+                    <Projects />
+                    <Repos />
+                    <Hr />
+                    <Contact />
+                    <Hr />
+                    <Footer />
+                </div>
             </div>
         </I18nContextProvider>
     }
@@ -40,6 +45,29 @@ fn BgAnim() -> impl IntoView {
             rounded-full opacity-15 blur-[110px] will-change-transform animate-drift-c
             bg-[radial-gradient(circle_at_50%_50%,#adadf3_0%,transparent_70%)]"></div>
         </div>
+    }
+}
+
+#[component]
+fn Chevron() -> impl IntoView {
+    view! {
+        <a href="#projects">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="size-10 mb-10 text-neutral-300"
+            >
+                <path d="m7 6 5 5 5-5" />
+                <path d="m7 13 5 5 5-5" />
+            </svg>
+        </a>
     }
 }
 
@@ -115,7 +143,7 @@ fn Header() -> impl IntoView {
     };
 
     view! {
-        <Html attr:data-theme=get_theme />
+        <Html attr:data-theme=get_theme attr:class="snap-y snap-mandatory" />
         <header class="py-6 flex justify-between items-center">
             <p>relaforg<span class="text-accent-500">@</span>dev</p>
             <div class="flex items-center gap-5">
@@ -149,7 +177,7 @@ fn Header() -> impl IntoView {
 fn Footer() -> impl IntoView {
     let year = js_sys::Date::new_0().get_full_year();
     view! {
-        <div class="flex justify-between my-4 text-sm text-neutral-500">
+        <div class="flex justify-between my-4 pb-4 text-sm text-neutral-500">
             <p>Rémi Laforgue</p>
             <p>{year}</p>
         </div>
