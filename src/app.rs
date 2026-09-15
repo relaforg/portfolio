@@ -1,12 +1,13 @@
 use crate::{contact::Contact, projects::Projects, repos::Repos, terminal::Terminal};
-use leptos::prelude::*;
+use leptos::{ev::MouseEvent, prelude::*};
+use leptos_meta::Html;
 
 #[component]
 pub fn App() -> impl IntoView {
     view! {
         <div class="mx-auto max-w-250 px-4">
             <div class="min-h-dvh flex flex-col">
-                <Header />
+                <Header/>
                 <div class="flex-1 flex items-center">
                     <Terminal />
                 </div>
@@ -27,8 +28,52 @@ pub fn Hr() -> impl IntoView {
 }
 
 #[component]
-fn Header() -> impl IntoView {
+fn Sun() -> impl IntoView {
     view! {
+        <svg
+        xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="size-4"
+            aria-hidden="true"
+            >
+            <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2" />
+        <path d="M12 20v2" />
+        <path d="m4.93 4.93 1.41 1.41" />
+        <path d="m17.66 17.66 1.41 1.41" />
+        <path d="M2 12h2" />
+        <path d="M20 12h2" />
+        <path d="m6.34 17.66-1.41 1.41" />
+        <path d="m19.07 4.93-1.41 1.41" />
+        </svg>
+    }
+}
+
+#[component]
+fn Moon() -> impl IntoView {
+    view! {
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+    }
+}
+
+#[component]
+fn Header() -> impl IntoView {
+    let (theme, set_theme) = signal(true);
+
+    let toggle_theme = move |_| set_theme.set(!theme.get());
+    let get_theme = move || match theme.get() {
+        true => "dark",
+        false => "light",
+    };
+    view! {
+        <Html attr:data-theme=get_theme />
         <header class="py-6 flex justify-between items-center">
             <p>relaforg<span class="text-accent-500">@</span>dev</p>
             <div class="flex items-center gap-5">
@@ -40,30 +85,10 @@ fn Header() -> impl IntoView {
                 <button class="py-1 px-3 border border-line rounded-sm cursor-pointer">
                     "FR / en"
                 </button>
-                <button class="cursor-pointer" aria-label="Change theme">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="size-4"
-                        aria-hidden="true"
-                    >
-                        <circle cx="12" cy="12" r="4" />
-                        <path d="M12 2v2" />
-                        <path d="M12 20v2" />
-                        <path d="m4.93 4.93 1.41 1.41" />
-                        <path d="m17.66 17.66 1.41 1.41" />
-                        <path d="M2 12h2" />
-                        <path d="M20 12h2" />
-                        <path d="m6.34 17.66-1.41 1.41" />
-                        <path d="m19.07 4.93-1.41 1.41" />
-                    </svg>
+                <button class="cursor-pointer" aria-label="Change theme" on:click=toggle_theme>
+                    <Show when=move || theme.get() == true fallback=|| view! { <Moon /> }>
+                        <Sun />
+                    </Show>
                 </button>
             </div>
         </header>
