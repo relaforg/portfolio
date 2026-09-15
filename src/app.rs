@@ -1,4 +1,4 @@
-use crate::{projects::Projects, repos::Repos, terminal::Terminal};
+use crate::{contact::Contact, projects::Projects, repos::Repos, terminal::Terminal};
 use leptos::prelude::*;
 
 #[component]
@@ -14,6 +14,8 @@ pub fn App() -> impl IntoView {
             <Projects />
             <Repos />
             <Hr />
+            <Contact />
+            <Hr />
             <Footer />
         </div>
     }
@@ -21,7 +23,7 @@ pub fn App() -> impl IntoView {
 
 #[component]
 pub fn Hr() -> impl IntoView {
-    view! { <hr class="border-line my-1" /> }
+    view! { <hr class="border-line my-5" /> }
 }
 
 #[component]
@@ -72,7 +74,7 @@ fn Header() -> impl IntoView {
 fn Footer() -> impl IntoView {
     let year = js_sys::Date::new_0().get_full_year();
     view! {
-        <div class="flex justify-between my-4">
+        <div class="flex justify-between my-4 text-sm text-neutral-500">
             <p>Rémi Laforgue</p>
             <p>{year}</p>
         </div>

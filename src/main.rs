@@ -1,4 +1,5 @@
 mod app;
+mod contact;
 mod projects;
 mod repos;
 mod terminal;

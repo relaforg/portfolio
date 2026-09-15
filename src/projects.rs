@@ -76,7 +76,7 @@ fn ProjectView(project: Project) -> impl IntoView {
                 </div>
                 <span class="text-neutral-500">{project.techs.join(" · ")}</span>
             </div>
-            <p class="max-w-85/100">{project.description}</p>
+            <p class="max-w-85/100 text-sm">{project.description}</p>
             <div class="flex gap-2 my-4">
                 {project
                     .topics

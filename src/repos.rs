@@ -12,7 +12,7 @@ struct Repo {
 }
 
 async fn fetch_repos() -> Result<Vec<Repo>, gloo_net::Error> {
-    Request::get("https://api.github.com/users/relaforg/repos?sort=updated&per_page=20")
+    Request::get("shttps://api.github.com/users/relaforg/repos?sort=updated&per_page=20")
         .send()
         .await?
         .json()
@@ -23,11 +23,11 @@ async fn fetch_repos() -> Result<Vec<Repo>, gloo_net::Error> {
 pub fn Repos() -> impl IntoView {
     let repos = LocalResource::new(fetch_repos);
     view! {
-        <h2 id="repos" class="mb-3 text-neutral-500 mt-10">
+        <h2 id="repos" class="mb-3 text-neutral-500 mt-5">
             "// MON ACTIVITÉ RÉCENTE"
         </h2>
         <Suspense fallback=move || {
-            view! { <p>"Loading..."</p> }
+            view! { <p>"Chargement..."</p> }
         }>
             {move || {
                 repos
@@ -46,7 +46,9 @@ pub fn Repos() -> impl IntoView {
                             )
                         }
                         Err(_e) => {
-                            Either::Left(view! { <p>"Error while fetching github repos"</p> })
+                            Either::Left(
+                                view! { <p>"Impossible de réccuperer l'activité récente."</p> },
+                            )
                         }
                     })
             }}
