@@ -61,7 +61,12 @@ pub fn Repos() -> impl IntoView {
 fn RepoView(repo: Repo) -> impl IntoView {
     view! {
         <li class="p-1 col-span-3 grid grid-cols-subgrid items-baseline gap-x-8 hover:bg-surface text-sm">
-            <a rel="external" href=repo.html_url class="text-accent-500">
+            <a
+                rel="external noopener noreferrer"
+                target="_blank"
+                href=repo.html_url
+                class="text-accent-500"
+            >
                 {repo.name}
             </a>
             <p class="truncate">{repo.description}</p>

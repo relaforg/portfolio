@@ -102,7 +102,8 @@ fn ProjectView(project: Project) -> impl IntoView {
                     .collect_view()}
             </div>
             <a
-                rel="external"
+                rel="external noopener noreferrer"
+                target="_blank"
                 href=project.github_link
                 class="border border-line rounded-md px-3 py-1 text-xs hover:bg-surface hover:text-accent-200"
             >

@@ -51,7 +51,8 @@ pub fn Contact() -> impl IntoView {
                     .map(|n| {
                         view! {
                             <a
-                                rel="external"
+                                rel="external noopener noreferrer"
+                                target="_blank"
                                 href=n.link
                                 class="text-sm flex justify-between hover:text-accent-500 my-2 px-1"
                             >
