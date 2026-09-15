@@ -23,22 +23,33 @@ async fn fetch_repos() -> Result<Vec<Repo>, gloo_net::Error> {
 pub fn Repos() -> impl IntoView {
     let repos = LocalResource::new(fetch_repos);
     view! {
-
-        <h2 id="projects" class="mb-3 text-neutral-500 mt-10">
-            "// AUTRES DÉPÔTS PUBLIQUES"
+        <h2 id="repos" class="mb-3 text-neutral-500 mt-10">
+            "// MON ACTIVITÉ RÉCENTE"
         </h2>
-         <Suspense fallback=move || view! { <p>"Loading..."</p>}>
-            {
-                move || repos.map(|res| match res {
-                    Ok(repos) => Either::Right(view !{
-                        <ul class="grid grid-cols-[auto_minmax(0,1fr)_auto]">
-                        {repos.iter().cloned().map(|r| view! {<RepoView repo=r />}).collect_view()}
-                        </ul>
-                    }
-                ),
-                    Err(_e) => Either::Left(view! {<p>"Error while fetching github repos"</p>})
-                })
-            }
+        <Suspense fallback=move || {
+            view! { <p>"Loading..."</p> }
+        }>
+            {move || {
+                repos
+                    .map(|res| match res {
+                        Ok(repos) => {
+                            Either::Right(
+                                view! {
+                                    <ul class="grid grid-cols-[auto_minmax(0,1fr)_auto]">
+                                        {repos
+                                            .iter()
+                                            .cloned()
+                                            .map(|r| view! { <RepoView repo=r /> })
+                                            .collect_view()}
+                                    </ul>
+                                },
+                            )
+                        }
+                        Err(_e) => {
+                            Either::Left(view! { <p>"Error while fetching github repos"</p> })
+                        }
+                    })
+            }}
         </Suspense>
     }
 }
@@ -46,7 +57,7 @@ pub fn Repos() -> impl IntoView {
 #[component]
 fn RepoView(repo: Repo) -> impl IntoView {
     view! {
-        <li class="col-span-3 grid grid-cols-subgrid items-baseline gap-x-8 py-3">
+        <li class="p-1 col-span-3 grid grid-cols-subgrid items-baseline gap-x-8 hover:bg-surface text-sm">
             <a rel="external" href=repo.html_url class="text-accent-500">
                 {repo.name}
             </a>
@@ -55,6 +66,6 @@ fn RepoView(repo: Repo) -> impl IntoView {
                 {repo.language.unwrap_or_else(|| "-".to_string())}
             </span>
         </li>
-        <hr class="col-span-3 h-px border-0 bg-[linear-gradient(to_right,transparent,var(--color-line)_4rem,var(--color-line)_calc(100%-4rem),transparent)]"/>
+        <hr class="col-span-3 h-px border-0 bg-[linear-gradient(to_right,transparent,var(--color-line)_4rem,var(--color-line)_calc(100%-4rem),transparent)]" />
     }
 }
