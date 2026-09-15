@@ -1,24 +1,27 @@
+use crate::i18n::*;
 use crate::{contact::Contact, projects::Projects, repos::Repos, terminal::Terminal};
-use leptos::{ev::MouseEvent, prelude::*};
+use leptos::prelude::*;
 use leptos_meta::Html;
 
 #[component]
 pub fn App() -> impl IntoView {
     view! {
-        <div class="mx-auto max-w-250 px-4">
-            <div class="min-h-dvh flex flex-col">
-                <Header/>
-                <div class="flex-1 flex items-center">
-                    <Terminal />
+        <I18nContextProvider>
+            <div class="mx-auto max-w-250 px-4">
+                <div class="min-h-dvh flex flex-col">
+                    <Header />
+                    <div class="flex-1 flex items-center">
+                        <Terminal />
+                    </div>
                 </div>
+                <Projects />
+                <Repos />
+                <Hr />
+                <Contact />
+                <Hr />
+                <Footer />
             </div>
-            <Projects />
-            <Repos />
-            <Hr />
-            <Contact />
-            <Hr />
-            <Footer />
-        </div>
+        </I18nContextProvider>
     }
 }
 
@@ -31,7 +34,7 @@ pub fn Hr() -> impl IntoView {
 fn Sun() -> impl IntoView {
     view! {
         <svg
-        xmlns="http://www.w3.org/2000/svg"
+            xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
             viewBox="0 0 24 24"
@@ -42,16 +45,16 @@ fn Sun() -> impl IntoView {
             stroke-linejoin="round"
             class="size-4"
             aria-hidden="true"
-            >
+        >
             <circle cx="12" cy="12" r="4" />
-        <path d="M12 2v2" />
-        <path d="M12 20v2" />
-        <path d="m4.93 4.93 1.41 1.41" />
-        <path d="m17.66 17.66 1.41 1.41" />
-        <path d="M2 12h2" />
-        <path d="M20 12h2" />
-        <path d="m6.34 17.66-1.41 1.41" />
-        <path d="m19.07 4.93-1.41 1.41" />
+            <path d="M12 2v2" />
+            <path d="M12 20v2" />
+            <path d="m4.93 4.93 1.41 1.41" />
+            <path d="m17.66 17.66 1.41 1.41" />
+            <path d="M2 12h2" />
+            <path d="M20 12h2" />
+            <path d="m6.34 17.66-1.41 1.41" />
+            <path d="m19.07 4.93-1.41 1.41" />
         </svg>
     }
 }
@@ -59,12 +62,27 @@ fn Sun() -> impl IntoView {
 #[component]
 fn Moon() -> impl IntoView {
     view! {
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#000000"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="size-4"
+        >
+            <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" />
+        </svg>
     }
 }
 
 #[component]
 fn Header() -> impl IntoView {
+    let i18n = use_i18n();
+
     let (theme, set_theme) = signal(true);
 
     let toggle_theme = move |_| set_theme.set(!theme.get());
@@ -72,18 +90,32 @@ fn Header() -> impl IntoView {
         true => "dark",
         false => "light",
     };
+
+    let toggle_locale = move |_| match i18n.get_locale() {
+        Locale::en => i18n.set_locale(Locale::fr),
+        _ => i18n.set_locale(Locale::en),
+    };
+
     view! {
         <Html attr:data-theme=get_theme />
         <header class="py-6 flex justify-between items-center">
             <p>relaforg<span class="text-accent-500">@</span>dev</p>
             <div class="flex items-center gap-5">
                 <nav class="flex items-center gap-5">
-                    <a href="#projects">"projects"</a>
-                    <a href="#repos">"repos"</a>
+                    <a href="#projects">{t!(i18n, header.projects)}</a>
+                    // <a href="#repos">{t!(i18n, header.activity)}</a>
                     <a href="#contact">"contact"</a>
                 </nav>
-                <button class="py-1 px-3 border border-line rounded-sm cursor-pointer">
-                    "FR / en"
+                <button
+                    on:click=toggle_locale
+                    class="py-1 px-3 border border-line rounded-sm cursor-pointer"
+                >
+                    <Show
+                        when=move || i18n.get_locale() == Locale::fr
+                        fallback=|| view! { "fr / EN" }
+                    >
+                        "FR / en"
+                    </Show>
                 </button>
                 <button class="cursor-pointer" aria-label="Change theme" on:click=toggle_theme>
                     <Show when=move || theme.get() == true fallback=|| view! { <Moon /> }>

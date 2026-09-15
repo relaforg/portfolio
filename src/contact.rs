@@ -1,4 +1,7 @@
 use leptos::prelude::*;
+use leptos_i18n::t;
+
+use crate::i18n::use_i18n;
 
 struct SocialLink {
     label: String,
@@ -8,6 +11,8 @@ struct SocialLink {
 
 #[component]
 pub fn Contact() -> impl IntoView {
+    let i18n = use_i18n();
+
     let links = vec![
         SocialLink {
             label: "email".to_string(),
@@ -36,10 +41,8 @@ pub fn Contact() -> impl IntoView {
         </h2>
         <div class="grid grid-cols-2 gap-5">
             <div>
-                <h3 class="text-3xl">"Contactez-moi"</h3>
-                <p class="text-sm my-5 text-neutral-500">
-                    "Disponible pour des stages, et ouvert à toute discussion — un projet, une question technique, ou simplement l'envie de parler de code."
-                </p>
+                <h3 class="text-3xl">{t!(i18n, contact.subtitle)}</h3>
+                <p class="text-sm my-5 text-neutral-500">{t!(i18n, contact.description)}</p>
             </div>
             <div>
                 <hr class="border-line" />

@@ -1,45 +1,54 @@
 use leptos::prelude::*;
+use leptos_i18n::{t, t_string};
 
-use crate::app::Hr;
+use crate::{app::Hr, i18n::use_i18n};
 
 struct Project {
     name: String,
-    description: String,
+    description: Signal<&'static str>,
     techs: Vec<String>,
-    topics: Vec<String>,
+    topics: Vec<Signal<&'static str>>,
     github_link: String,
-    role: String,
+    role: Signal<&'static str>,
 }
 
 fn get_projects() -> Vec<Project> {
+    let i18n = use_i18n();
+
     vec![
         Project {
             name: "The Answer Protocol".to_string(),
-            role: "server".to_string(),
-            description: "Un MUD : monde textuel persistant où plusieurs joueurs explorent des salles, discutent et coopèrent en temps réel. Serveur TCP gérant les connexions, protocole ligne à ligne et monde 100 % configurable en YAML. Deux clients, un disponible dans le terminal et l'autre graphiquement.".to_string(),
+            role: Signal::derive(move || t_string!(i18n, projects.tap.role)),
+            description: Signal::derive(move || t_string!(i18n, projects.tap.description)),
             techs: vec!["Rust".to_string()],
             topics: vec![
-                "Réseau".to_string(),
-                "Jeu".to_string(),
-                "Multi-joueur".to_string(),
-                "42".to_string(),
+                Signal::derive(move || t_string!(i18n, projects.topics.network)),
+                Signal::derive(move || t_string!(i18n, projects.topics.game)),
+                Signal::derive(move || t_string!(i18n, projects.topics.multiplayer)),
+                Signal::derive(move || "42"),
             ],
             github_link: "https://github.com/Arcanovax/TAP".to_string(),
         },
         Project {
             name: "Chip8".to_string(),
-            role: "solo".to_string(),
-            description: "Émulateur CHIP-8 écrit de zéro : jeu d'instructions complet, registres, pile, timers, affichage 64×32 et clavier hexadécimal via SDL2. Un drapeau bascule entre le comportement original et le comportement des interpréteurs modernes sur les opcodes ambigus.".to_string(),
+            role: Signal::derive(move || t_string!(i18n, projects.chip8.role)),
+            description: Signal::derive(move || t_string!(i18n, projects.chip8.description)),
             techs: vec!["Rust".to_string()],
-            topics: vec!["Émulation".to_string(), "Bas niveau".to_string()],
+            topics: vec![
+                Signal::derive(move || t_string!(i18n, projects.topics.emulation)),
+                Signal::derive(move || t_string!(i18n, projects.topics.low_level)),
+            ],
             github_link: "https://github.com/relaforg/chip8".to_string(),
         },
         Project {
             name: "A Maze Ing".to_string(),
-            role: "frontend".to_string(),
-            description: "Générateur et solveur de labyrinthe : six formes (rectangle, carré, cercle, donut, losange et ellipse), résolution A*, génération reproductible par seed. Interface en deux fenêtres, le labyrinthe d'un côté, les contrôles de l'autre. La fenêtre principale est redimensionnable et permet de zoomer et de se déplacer sur le labyrinthe.".to_string(),
+            role: Signal::derive(move || t_string!(i18n, projects.amazeing.role)),
+            description: Signal::derive(move || t_string!(i18n, projects.amazeing.description)),
             techs: vec!["Python".to_string()],
-            topics: vec!["Graphique".to_string(), "42".to_string()],
+            topics: vec![
+                Signal::derive(move || t_string!(i18n, projects.topics.graphic)),
+                Signal::derive(move || "42"),
+            ],
             github_link: "https://github.com/relaforg/a_maze_ing".to_string(),
         },
     ]
@@ -47,10 +56,12 @@ fn get_projects() -> Vec<Project> {
 
 #[component]
 pub fn Projects() -> impl IntoView {
+    let i18n = use_i18n();
     let projects = get_projects();
     view! {
         <h2 id="projects" class="my-3 text-neutral-500">
-            "// PROJETS MIS EN AVANT"
+            "// "
+            {t!(i18n, projects.title)}
         </h2>
         <Hr />
         {projects

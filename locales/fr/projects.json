@@ -1,0 +1,23 @@
+{
+	"title": "PROJETS MIS EN AVANT",
+	"topics": {
+		"network": "Réseau",
+		"game": "Jeu",
+		"multiplayer": "Multi-joueur",
+		"emulation": "Émulation",
+		"low_level": "Bas niveau",
+		"graphic": "Graphique"
+	},
+	"tap": {
+		"role": "serveur",
+		"description": "Un MUD : monde textuel persistant où plusieurs joueurs explorent des salles, discutent et coopèrent en temps réel. Serveur TCP gérant les connexions, protocole ligne à ligne et monde 100% configurable en YAML. Deux clients, un disponible dans le terminal et l'autre graphiquement."
+	},
+	"chip8": {
+		"role": "solo",
+		"description": "Émulateur CHIP-8 écrit de zéro : jeu d'instructions complet, registres, pile, timers, affichage 64×32 et clavier hexadécimal via SDL2. Un drapeau bascule entre le comportement original et le comportement des interpréteurs modernes sur les opcodes ambigus."
+	},
+	"amazeing": {
+		"role": "frontend",
+		"description": "Générateur et solveur de labyrinthe : six formes (rectangle, carré, cercle, donut, losange et ellipse), résolution A*, génération reproductible par seed. Interface en deux fenêtres, le labyrinthe d'un côté, les contrôles de l'autre. La fenêtre principale est redimensionnable et permet de zoomer et de se déplacer sur le labyrinthe."
+	}
+}

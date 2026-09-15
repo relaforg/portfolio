@@ -1,7 +1,10 @@
 use gloo_net::http::Request;
 use leptos::either::Either;
 use leptos::prelude::*;
+use leptos_i18n::t;
 use serde::Deserialize;
+
+use crate::i18n::use_i18n;
 
 #[derive(Deserialize, Clone)]
 struct Repo {
@@ -21,13 +24,15 @@ async fn fetch_repos() -> Result<Vec<Repo>, gloo_net::Error> {
 
 #[component]
 pub fn Repos() -> impl IntoView {
+    let i18n = use_i18n();
     let repos = LocalResource::new(fetch_repos);
     view! {
         <h2 id="repos" class="mb-3 text-neutral-500 mt-5">
-            "// MON ACTIVITÉ RÉCENTE"
+            "// "
+            {t!(i18n, activity.title)}
         </h2>
         <Suspense fallback=move || {
-            view! { <p>"Chargement..."</p> }
+            view! { <p>t!(i18n, activity.loading)</p> }
         }>
             {move || {
                 repos
@@ -45,11 +50,7 @@ pub fn Repos() -> impl IntoView {
                                 },
                             )
                         }
-                        Err(_e) => {
-                            Either::Left(
-                                view! { <p>"Impossible de réccuperer l'activité récente."</p> },
-                            )
-                        }
+                        Err(_e) => Either::Left(view! { <p>{t!(i18n, activity.error)}</p> }),
                     })
             }}
         </Suspense>

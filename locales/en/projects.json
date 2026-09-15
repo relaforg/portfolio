@@ -1,0 +1,23 @@
+{
+	"title": "FEATURED PROJECTS",
+	"topics": {
+		"network": "Network",
+		"game": "Game",
+		"multiplayer": "Multiplayer",
+		"emulation": "Emulation",
+		"low_level": "Low level",
+		"graphic": "Graphic"
+	},
+	"tap": {
+		"role": "server",
+		"description": "A MUD: a persistent text-based world where multiple players explore rooms, chat and cooperate in real time. TCP server handling connections, line-based protocol and a fully YAML-configurable world. Two clients: one in the terminal, the other graphical."
+	},
+	"chip8": {
+		"role": "solo",
+		"description": "CHIP-8 emulator written from scratch: full instruction set, registers, stack, timers, 64×32 display and hexadecimal keypad via SDL2. A flag switches between the original behavior and that of modern interpreters on ambiguous opcodes."
+	},
+	"amazeing": {
+		"role": "frontend",
+		"description": "Maze generator and solver: six shapes (rectangle, square, circle, donut, diamond and ellipse), A* pathfinding, reproducible seed-based generation. Two-window interface, with the maze on one side and the controls on the other. The main window is resizable and lets you zoom and pan around the maze."
+	}
+}

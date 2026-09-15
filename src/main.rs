@@ -4,6 +4,8 @@ mod projects;
 mod repos;
 mod terminal;
 
+include!(concat!(env!("OUT_DIR"), "/i18n/mod.rs"));
+
 use app::*;
 
 fn main() {
