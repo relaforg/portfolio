@@ -6,6 +6,7 @@ use leptos_meta::Html;
 #[component]
 pub fn App() -> impl IntoView {
     view! {
+        <Html attr:class="snap-y snap-proximity" />
         <I18nContextProvider>
             <BgAnim />
             <div class="mx-auto max-w-250 px-4">
@@ -18,14 +19,12 @@ pub fn App() -> impl IntoView {
                         <Chevron />
                     </div>
                 </div>
-                <div class="snap-start snap-always scroll-mt-25">
-                    <Projects />
-                    <Repos />
-                    <Hr />
-                    <Contact />
-                    <Hr />
-                    <Footer />
-                </div>
+                <Projects />
+                <Repos />
+                <Hr />
+                <Contact />
+                <Hr />
+                <Footer />
             </div>
         </I18nContextProvider>
     }
@@ -62,7 +61,7 @@ fn Chevron() -> impl IntoView {
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="size-10 mb-10 text-neutral-300"
+                class="size-10 mb-10 text-neutral-300 hover:text-accent-500"
             >
                 <path d="m7 6 5 5 5-5" />
                 <path d="m7 13 5 5 5-5" />
@@ -143,7 +142,7 @@ fn Header() -> impl IntoView {
     };
 
     view! {
-        <Html attr:data-theme=get_theme attr:class="snap-y snap-mandatory" />
+        <Html attr:data-theme=get_theme />
         <header class="p-6 flex justify-between items-center sticky top-1 z-10 isolate">
             <div class="absolute bg-surface/30 backdrop-blur-xl -inset-x-4 -inset-y-0 -z-1 mask-x-from-[calc(100%-1rem)] mask-y-from-[calc(100%-1rem)]"></div>
             <p>relaforg<span class="text-accent-500">@</span>dev</p>
