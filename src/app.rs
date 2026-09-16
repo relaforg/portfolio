@@ -1,7 +1,10 @@
 use crate::i18n::*;
 use crate::{contact::Contact, projects::Projects, repos::Repos, terminal::Terminal};
-use leptos::prelude::*;
+use leptos::html::Div;
+use leptos::tachys::renderer::dom::Element;
+use leptos::{ev, prelude::*};
 use leptos_meta::Html;
+use leptos_use::{UseWindowSizeReturn, use_window_scroll, use_window_size};
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -9,6 +12,7 @@ pub fn App() -> impl IntoView {
         <Html attr:class="snap-y snap-proximity" />
         <I18nContextProvider>
             <BgAnim />
+            <Sidebar />
             <Options />
             <div class="mx-auto max-w-250 px-4">
                 <div class="min-h-dvh flex flex-col snap-start">
@@ -121,6 +125,29 @@ fn Moon() -> impl IntoView {
         >
             <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" />
         </svg>
+    }
+}
+
+#[component]
+fn Sidebar() -> impl IntoView {
+    let i18n = use_i18n();
+    let (_, y) = use_window_scroll();
+    let UseWindowSizeReturn { height, .. } = use_window_size();
+
+    let position = move || {
+        let h = height.get();
+        if h <= 0.0 {
+            return 0.0;
+        }
+        (1.5 * h - y.get()).max(0.5 * h)
+    };
+
+    view! {
+        <nav class="ml-5 fixed -translate-y-1/2 flex flex-col gap-1 text-neutral-500" style=("top", move || format!("{}px", position().to_string()))>
+            <a href="#projects" class="hover:text-accent-500">"— " {t!(i18n, header.projects)}</a>
+            <a href="#repos" class="hover:text-accent-500">"— " {t!(i18n, header.activity)}</a>
+            <a href="#contact" class="hover:text-accent-500">"— contact"</a>
+        </nav>
     }
 }
 
