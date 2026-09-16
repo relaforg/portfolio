@@ -9,8 +9,8 @@ pub fn App() -> impl IntoView {
         <Html attr:class="snap-y snap-proximity" />
         <I18nContextProvider>
             <BgAnim />
+            <Options />
             <div class="mx-auto max-w-250 px-4">
-                <Header />
                 <div class="min-h-dvh flex flex-col snap-start">
                     <div class="flex-1 flex items-center">
                         <Terminal />
@@ -35,13 +35,13 @@ fn BgAnim() -> impl IntoView {
     view! {
         <div aria-hidden="true" class="pointer-events-none fixed inset-0 -z-1 overflow-hidden">
             <div class="absolute -top-[18vh] -left-[8vw] h-[62vw] w-[62vw] min-h-[420px] min-w-[420px]
-            rounded-full opacity-30 blur-[90px] will-change-transform animate-drift-a
+            rounded-full opacity-15 blur-[90px] will-change-transform animate-drift-a
             bg-[radial-gradient(circle_at_50%_50%,#80a0ff_0%,transparent_68%)]"></div>
             <div class="absolute -right-[10vw] -bottom-[22vh] h-[55vw] w-[55vw] min-h-[380px] min-w-[380px]
-            rounded-full opacity-25 blur-[100px] will-change-transform animate-drift-b
+            rounded-full opacity-20 blur-[100px] will-change-transform animate-drift-b
             bg-[radial-gradient(circle_at_50%_50%,#74b2ff_0%,transparent_66%)]"></div>
             <div class="absolute top-[34vh] left-[42vw] h-[44vw] w-[44vw] min-h-[320px] min-w-[320px]
-            rounded-full opacity-15 blur-[110px] will-change-transform animate-drift-c
+            rounded-full opacity-10 blur-[110px] will-change-transform animate-drift-c
             bg-[radial-gradient(circle_at_50%_50%,#adadf3_0%,transparent_70%)]"></div>
         </div>
     }
@@ -125,7 +125,7 @@ fn Moon() -> impl IntoView {
 }
 
 #[component]
-fn Header() -> impl IntoView {
+fn Options() -> impl IntoView {
     let i18n = use_i18n();
 
     let (theme, set_theme) = signal(true);
@@ -143,14 +143,8 @@ fn Header() -> impl IntoView {
 
     view! {
         <Html attr:data-theme=get_theme />
-        <header class="p-6 flex justify-between items-center sticky top-1 z-10 isolate">
-            <div class="absolute bg-surface/30 backdrop-blur-xl -inset-x-4 -inset-y-0 -z-1 mask-x-from-[calc(100%-1rem)] mask-y-from-[calc(100%-1rem)]"></div>
-            <p>relaforg<span class="text-accent-500">@</span>dev</p>
+        <div class="p-6 flex justify-between items-center fixed bottom-1 right-1 z-10">
             <div class="flex items-center gap-5">
-                <nav class="flex items-center gap-5">
-                    <a href="#projects">{t!(i18n, header.projects)}</a>
-                    <a href="#contact">"contact"</a>
-                </nav>
                 <button
                     on:click=toggle_locale
                     class="py-1 px-3 border border-line rounded-sm cursor-pointer"
@@ -168,7 +162,7 @@ fn Header() -> impl IntoView {
                     </Show>
                 </button>
             </div>
-        </header>
+        </div>
     }
 }
 
