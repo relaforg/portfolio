@@ -29,43 +29,42 @@ pub fn Repos() -> impl IntoView {
     let i18n = use_i18n();
     let repos = LocalResource::new(fetch_repos);
     view! {
-        <h2 id="repos" class="mb-3 text-neutral-500 mt-5">
-            "// "
-            {t!(i18n, activity.title)}
-        </h2>
-        <Suspense fallback=move || {
-            view! { <p>t!(i18n, activity.loading)</p> }
-        }>
-            {move || {
-                repos
-                    .map(|res| match res {
-                        Ok(repos) => {
-                            Either::Right(
-                                view! {
-                                    <ul class="grid grid-cols-[auto_minmax(0,1fr)_auto]">
-                                        {repos
-                                            .iter()
-                                            .cloned()
-                                            .map(|r| view! { <RepoView repo=r /> })
-                                            .collect_view()}
-                                    </ul>
-                                },
-                            )
-                        }
-                        Err(_e) => Either::Left(view! { <p>{t!(i18n, activity.error)}</p> }),
-                    })
-            }}
-        </Suspense>
-        <div class="my-2">
-            <a
-                href="https://github.com/relaforg?tab=repositories"
-                target="_blank"
-                class="text-xs text-neutral-500 hover:text-accent-500"
-            >
-                {t!(i18n, activity.all_repos)}
-                " ➜"
-            </a>
-        </div>
+        <section id="repos" class="mb-3 mt-5">
+            <h2 class="text-neutral-500">"// " {t!(i18n, activity.title)}</h2>
+            <Suspense fallback=move || {
+                view! { <p>t!(i18n, activity.loading)</p> }
+            }>
+                {move || {
+                    repos
+                        .map(|res| match res {
+                            Ok(repos) => {
+                                Either::Right(
+                                    view! {
+                                        <ul class="grid grid-cols-[auto_minmax(0,1fr)_auto]">
+                                            {repos
+                                                .iter()
+                                                .cloned()
+                                                .map(|r| view! { <RepoView repo=r /> })
+                                                .collect_view()}
+                                        </ul>
+                                    },
+                                )
+                            }
+                            Err(_e) => Either::Left(view! { <p>{t!(i18n, activity.error)}</p> }),
+                        })
+                }}
+            </Suspense>
+            <div class="my-2">
+                <a
+                    href="https://github.com/relaforg?tab=repositories"
+                    target="_blank"
+                    class="text-xs text-neutral-500 hover:text-accent-500"
+                >
+                    {t!(i18n, activity.all_repos)}
+                    " ➜"
+                </a>
+            </div>
+        </section>
     }
 }
 

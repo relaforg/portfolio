@@ -36,34 +36,34 @@ pub fn Contact() -> impl IntoView {
         },
     ];
     view! {
-        <h2 id="contact" class="my-3 text-neutral-500">
-            "// CONTACT"
-        </h2>
-        <div class="grid grid-cols-2 gap-5">
-            <div>
-                <h3 class="text-3xl">{t!(i18n, contact.subtitle)}</h3>
-                <p class="text-sm my-5 text-neutral-500">{t!(i18n, contact.description)}</p>
+        <section id="contact" class="my-3">
+            <h2 class="text-neutral-500">"// CONTACT"</h2>
+            <div class="grid grid-cols-2 gap-5">
+                <div>
+                    <h3 class="text-3xl">{t!(i18n, contact.subtitle)}</h3>
+                    <p class="text-sm my-5 text-neutral-500">{t!(i18n, contact.description)}</p>
+                </div>
+                <div>
+                    <hr class="border-line" />
+                    {links
+                        .into_iter()
+                        .map(|n| {
+                            view! {
+                                <a
+                                    rel="external noopener noreferrer"
+                                    target="_blank"
+                                    href=n.link
+                                    class="text-sm flex justify-between hover:text-accent-500 my-2 px-1"
+                                >
+                                    <span class="text-neutral-500">{n.label}</span>
+                                    <span>{n.username}</span>
+                                </a>
+                                <hr class="border-line" />
+                            }
+                        })
+                        .collect_view()}
+                </div>
             </div>
-            <div>
-                <hr class="border-line" />
-                {links
-                    .into_iter()
-                    .map(|n| {
-                        view! {
-                            <a
-                                rel="external noopener noreferrer"
-                                target="_blank"
-                                href=n.link
-                                class="text-sm flex justify-between hover:text-accent-500 my-2 px-1"
-                            >
-                                <span class="text-neutral-500">{n.label}</span>
-                                <span>{n.username}</span>
-                            </a>
-                            <hr class="border-line" />
-                        }
-                    })
-                    .collect_view()}
-            </div>
-        </div>
+        </section>
     }
 }

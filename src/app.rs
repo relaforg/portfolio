@@ -1,8 +1,12 @@
 use crate::i18n::*;
 use crate::{contact::Contact, projects::Projects, repos::Repos, terminal::Terminal};
+use leptos::ev::MouseEvent;
 use leptos::prelude::*;
 use leptos_meta::Html;
-use leptos_use::{use_window_scroll, use_window_size, UseWindowSizeReturn};
+use leptos_use::{
+    use_intersection_observer, use_intersection_observer_with_options, use_window_scroll,
+    use_window_size, UseIntersectionObserverOptions, UseWindowSizeReturn,
+};
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -131,6 +135,33 @@ fn Sidebar() -> impl IntoView {
     let i18n = use_i18n();
     let (_, y) = use_window_scroll();
     let UseWindowSizeReturn { height, .. } = use_window_size();
+    let (active, set_active) = signal(String::new());
+
+    const IDS: [&str; 3] = ["projects", "repos", "contact"];
+    let visible = StoredValue::new([false; 3]);
+
+    use_intersection_observer_with_options(
+        vec!["#projects", "#repos", "#contact"],
+        move |entries, _| {
+            visible.update_value(|v| {
+                for entry in entries {
+                    let id = entry.target().id();
+                    if let Some(i) = IDS.iter().position(|s| *s == id) {
+                        v[i] = entry.is_intersecting();
+                    }
+                }
+            });
+            let current = visible.with_value(|v| {
+                IDS.iter()
+                    .zip(v)
+                    .rev()
+                    .find(|(_, seen)| **seen)
+                    .map(|(id, _)| *id)
+            });
+            set_active.set(current.unwrap_or_default().to_string());
+        },
+        UseIntersectionObserverOptions::default().root_margin("-90% 0px 0px 0px"),
+    );
 
     let position = move || {
         let h = height.get();
@@ -145,15 +176,27 @@ fn Sidebar() -> impl IntoView {
             class="ml-5 fixed -translate-y-1/2 flex flex-col gap-1 text-neutral-500"
             style=("top", move || format!("{}px", position().to_string()))
         >
-            <a href="#projects" class="hover:text-accent-500">
+            <a
+                href="#projects"
+                class="hover:text-accent-500"
+                class=("text-white", move || active.get() == "projects")
+            >
                 "— "
                 {t!(i18n, header.projects)}
             </a>
-            <a href="#repos" class="hover:text-accent-500">
+            <a
+                href="#repos"
+                class="hover:text-accent-500"
+                class=("text-white", move || active.get() == "repos")
+            >
                 "— "
                 {t!(i18n, header.activity)}
             </a>
-            <a href="#contact" class="hover:text-accent-500">
+            <a
+                href="#contact"
+                class="hover:text-accent-500"
+                class=("text-white", move || active.get() == "contact")
+            >
                 "— contact"
             </a>
         </nav>

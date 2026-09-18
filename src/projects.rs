@@ -59,20 +59,19 @@ pub fn Projects() -> impl IntoView {
     let i18n = use_i18n();
     let projects = get_projects();
     view! {
-        <h2 id="projects" class="my-3 text-neutral-500">
-            "// "
-            {t!(i18n, projects.title)}
-        </h2>
-        <Hr />
-        {projects
-            .into_iter()
-            .map(|n| {
-                view! {
-                    <ProjectView project=n />
-                    <Hr />
-                }
-            })
-            .collect_view()}
+        <section id="projects" class="my-3">
+            <h2 class="text-neutral-500">"// " {t!(i18n, projects.title)}</h2>
+            <Hr />
+            {projects
+                .into_iter()
+                .map(|n| {
+                    view! {
+                        <ProjectView project=n />
+                        <Hr />
+                    }
+                })
+                .collect_view()}
+        </section>
     }
 }
 
