@@ -2,10 +2,7 @@ use crate::i18n::*;
 use crate::{contact::Contact, projects::Projects, repos::Repos, terminal::Terminal};
 use leptos::prelude::*;
 use leptos_meta::Html;
-use leptos_use::{
-    use_intersection_observer_with_options, use_window_scroll, use_window_size,
-    UseIntersectionObserverOptions, UseWindowSizeReturn,
-};
+use leptos_use::{use_window_scroll, use_window_size, UseWindowSizeReturn};
 
 #[component]
 pub fn App() -> impl IntoView {
