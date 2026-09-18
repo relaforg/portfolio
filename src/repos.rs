@@ -1,7 +1,8 @@
+use chrono::{DateTime, Local};
 use gloo_net::http::Request;
 use leptos::either::Either;
 use leptos::prelude::*;
-use leptos_i18n::t;
+use leptos_i18n::{t, t_string};
 use serde::Deserialize;
 
 use crate::i18n::use_i18n;
@@ -11,11 +12,12 @@ struct Repo {
     name: String,
     html_url: String,
     description: Option<String>,
-    pub language: Option<String>,
+    language: Option<String>,
+    pushed_at: Option<String>
 }
 
 async fn fetch_repos() -> Result<Vec<Repo>, gloo_net::Error> {
-    Request::get("https://api.github.com/users/relaforg/repos?sort=updated&per_page=20")
+    Request::get("https://api.github.com/users/relaforg/repos?sort=pushed&per_page=10")
         .send()
         .await?
         .json()
@@ -57,10 +59,25 @@ pub fn Repos() -> impl IntoView {
     }
 }
 
+fn format_date(date: Option<String>) -> Signal<String> {
+    let Some(date) = date else { return "-".into() };
+    let Ok(date) = DateTime::parse_from_rfc3339(&date) else { return "-".into() };
+
+    let i18n = use_i18n();
+    let elapsed = Local::now().signed_duration_since(date);
+    match elapsed.num_days() {
+        0 => Signal::derive(move || t_string!(i18n, date.today).into()),
+        1 => Signal::derive(move || t_string!(i18n, date.yesterday).into()),
+        days @ 0..=30 => Signal::derive(move || t_string!(i18n, date.days, count = days)),
+        days @ 0..=365 => Signal::derive(move || t_string!(i18n, date.months, count = days / 30)),
+        days @ _ => Signal::derive(move || t_string!(i18n, date.years, count = days / 365)),
+    }
+}
+
 #[component]
 fn RepoView(repo: Repo) -> impl IntoView {
     view! {
-        <li class="p-1 col-span-3 grid grid-cols-subgrid items-baseline gap-x-8 hover:bg-surface text-sm">
+        <li class="p-1 col-span-4 grid grid-cols-subgrid items-baseline gap-x-8 hover:bg-surface text-sm">
             <a
                 rel="external noopener noreferrer"
                 target="_blank"
@@ -73,7 +90,8 @@ fn RepoView(repo: Repo) -> impl IntoView {
             <span class="text-neutral-500 justify-self-end">
                 {repo.language.unwrap_or_else(|| "-".to_string())}
             </span>
+            <span class="text-neutral-500 justify-self-end">{format_date(repo.pushed_at)}</span>
         </li>
-        <hr class="col-span-3 h-px border-0 bg-[linear-gradient(to_right,transparent,var(--color-line)_4rem,var(--color-line)_calc(100%-4rem),transparent)]" />
+        <hr class="col-span-4 h-px border-0 bg-[linear-gradient(to_right,transparent,var(--color-line)_4rem,var(--color-line)_calc(100%-4rem),transparent)]" />
     }
 }

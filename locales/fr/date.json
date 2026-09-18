@@ -1,0 +1,10 @@
+{
+	"yesterday": "hier",
+	"today": "aujourd'hui",
+	"days_one": "{{ count }} jour",
+	"days_other": "{{ count }} jours",
+	"months_one": "{{ count }} mois",
+	"months_other": "{{ count }} mois",
+	"years_one": "{{ count }} an",
+	"years_other": "{{ count }} ans"
+}

@@ -1699,6 +1699,7 @@ dependencies = [
  "icu_list",
  "icu_locale",
  "icu_plurals",
+ "icu_provider",
  "leptos",
  "leptos-use 0.18.3",
  "leptos_i18n_macro",
@@ -2096,6 +2097,7 @@ dependencies = [
 name = "portfolio"
 version = "0.1.0"
 dependencies = [
+ "chrono",
  "console_error_panic_hook",
  "getrandom 0.4.3",
  "gloo-net 0.7.0",

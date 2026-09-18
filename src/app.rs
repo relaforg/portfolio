@@ -1,10 +1,8 @@
 use crate::i18n::*;
 use crate::{contact::Contact, projects::Projects, repos::Repos, terminal::Terminal};
-use leptos::html::Div;
-use leptos::tachys::renderer::dom::Element;
-use leptos::{ev, prelude::*};
+use leptos::prelude::*;
 use leptos_meta::Html;
-use leptos_use::{UseWindowSizeReturn, use_window_scroll, use_window_size};
+use leptos_use::{use_window_scroll, use_window_size, UseWindowSizeReturn};
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -143,10 +141,21 @@ fn Sidebar() -> impl IntoView {
     };
 
     view! {
-        <nav class="ml-5 fixed -translate-y-1/2 flex flex-col gap-1 text-neutral-500" style=("top", move || format!("{}px", position().to_string()))>
-            <a href="#projects" class="hover:text-accent-500">"— " {t!(i18n, header.projects)}</a>
-            <a href="#repos" class="hover:text-accent-500">"— " {t!(i18n, header.activity)}</a>
-            <a href="#contact" class="hover:text-accent-500">"— contact"</a>
+        <nav
+            class="ml-5 fixed -translate-y-1/2 flex flex-col gap-1 text-neutral-500"
+            style=("top", move || format!("{}px", position().to_string()))
+        >
+            <a href="#projects" class="hover:text-accent-500">
+                "— "
+                {t!(i18n, header.projects)}
+            </a>
+            <a href="#repos" class="hover:text-accent-500">
+                "— "
+                {t!(i18n, header.activity)}
+            </a>
+            <a href="#contact" class="hover:text-accent-500">
+                "— contact"
+            </a>
         </nav>
     }
 }
