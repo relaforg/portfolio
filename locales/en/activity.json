@@ -1,5 +1,6 @@
 {
 	"title": "MY RECENT ACTIVITY",
 	"loading": "loading...",
-	"error": "Unable to retrieve recent activity."
+	"error": "Unable to retrieve recent activity.",
+	"all_repos": "all repositories"
 }

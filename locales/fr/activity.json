@@ -1,5 +1,6 @@
 {
 	"title": "MON ACTIVITÉ RÉCENTE",
 	"loading": "chargement...",
-	"error": "Impossible de réccuperer l'activité récente."
+	"error": "Impossible de réccuperer l'activité récente.",
+	"all_repos": "tous les dépôts"
 }

@@ -56,6 +56,16 @@ pub fn Repos() -> impl IntoView {
                     })
             }}
         </Suspense>
+        <div class="my-2">
+            <a
+                href="https://github.com/relaforg?tab=repositories"
+                target="_blank"
+                class="text-xs text-neutral-500 hover:text-accent-500"
+            >
+                {t!(i18n, activity.all_repos)}
+                " ➜"
+            </a>
+        </div>
     }
 }
 
