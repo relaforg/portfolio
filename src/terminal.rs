@@ -70,6 +70,12 @@ pub fn Terminal() -> impl IntoView {
         command.1.set(String::new());
     };
 
+    let focus_on_click = move |_| {
+        if let Some(node) = input_ref.get() {
+            let _ = node.focus();
+        }
+    };
+
     Effect::new(move |_| {
         entries.track();
         if let Some(node) = output.get() {
@@ -84,7 +90,10 @@ pub fn Terminal() -> impl IntoView {
     });
 
     view! {
-        <div class="h-150 border-2 border-line rounded-md bg-linear-to-t from-bg to-surface from-70% w-full flex flex-col">
+        <div
+            on:click=focus_on_click
+            class="h-150 border-2 border-line rounded-md bg-linear-to-t from-bg to-surface from-70% w-full flex flex-col"
+        >
             <TerminalHeader />
             <div node_ref=output class="min-h-0 overflow-y-auto">
                 <TerminalContent entries=entries />
@@ -116,7 +125,7 @@ fn TerminalContent(entries: ReadSignal<Vec<Entry>>) -> impl IntoView {
                 let prompt = (!input.is_empty())
                     .then(|| {
 
-                        view! { <p class="text-accent-500">"➜ ~ "{input}</p> }
+                        view! { <p class="text-accent-500 my-1">"➜ ~ "{input}</p> }
                     });
 
                 view! {
