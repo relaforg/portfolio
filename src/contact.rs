@@ -3,38 +3,39 @@ use leptos_i18n::t;
 
 use crate::i18n::use_i18n;
 
-struct SocialLink {
-    label: String,
-    username: String,
-    link: String,
+pub struct SocialLink {
+    pub label: &'static str,
+    pub username: &'static str,
+    pub link: &'static str,
 }
+
+pub const LINKS: [SocialLink; 4] = [
+    SocialLink {
+        label: "email",
+        username: "contact@remi-laforgue.fr",
+        link: "mailto:contact@remi-laforgue.fr",
+    },
+    SocialLink {
+        label: "github",
+        username: "relaforg",
+        link: "https://github.com/relaforg",
+    },
+    SocialLink {
+        label: "linkedin",
+        username: "rémi-laforgue",
+        link: "https://www.linkedin.com/in/r%C3%A9mi-laforgue-8b02b242b/",
+    },
+    SocialLink {
+        label: "cv",
+        username: "cv.pdf",
+        link: "test.pdf",
+    },
+];
 
 #[component]
 pub fn Contact() -> impl IntoView {
     let i18n = use_i18n();
 
-    let links = vec![
-        SocialLink {
-            label: "email".to_string(),
-            username: "contact@remi-laforgue.fr".to_string(),
-            link: "mailto:contact@remi-laforgue.fr".to_string(),
-        },
-        SocialLink {
-            label: "github".to_string(),
-            username: "relaforg".to_string(),
-            link: "https://github.com/relaforg".to_string(),
-        },
-        SocialLink {
-            label: "linkedin".to_string(),
-            username: "rémi-laforgue".to_string(),
-            link: "https://www.linkedin.com/in/r%C3%A9mi-laforgue-8b02b242b/".to_string(),
-        },
-        SocialLink {
-            label: "cv".to_string(),
-            username: "cv.pdf".to_string(),
-            link: "".to_string(),
-        },
-    ];
     view! {
         <section id="contact" class="my-3">
             <h2 class="text-neutral-500">"// CONTACT"</h2>
@@ -45,7 +46,7 @@ pub fn Contact() -> impl IntoView {
                 </div>
                 <div>
                     <hr class="border-line" />
-                    {links
+                    {LINKS
                         .into_iter()
                         .map(|n| {
                             view! {
