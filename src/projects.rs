@@ -1,57 +1,69 @@
+use std::collections::HashMap;
+
 use leptos::prelude::*;
 use leptos_i18n::{t, t_string};
 
 use crate::{app::Hr, i18n::use_i18n};
 
-struct Project {
-    name: String,
-    description: Signal<&'static str>,
-    techs: Vec<String>,
-    topics: Vec<Signal<&'static str>>,
-    github_link: String,
-    role: Signal<&'static str>,
+#[derive(Clone)]
+pub struct Project {
+    pub name: String,
+    pub description: Signal<&'static str>,
+    pub techs: Vec<String>,
+    pub topics: Vec<Signal<&'static str>>,
+    pub github_link: String,
+    pub role: Signal<&'static str>,
 }
 
-fn get_projects() -> Vec<Project> {
+pub fn get_projects() -> HashMap<&'static str, Project> {
     let i18n = use_i18n();
 
-    vec![
-        Project {
-            name: "The Answer Protocol".to_string(),
-            role: Signal::derive(move || t_string!(i18n, projects.tap.role)),
-            description: Signal::derive(move || t_string!(i18n, projects.tap.description)),
-            techs: vec!["Rust".to_string()],
-            topics: vec![
-                Signal::derive(move || t_string!(i18n, projects.topics.network)),
-                Signal::derive(move || t_string!(i18n, projects.topics.game)),
-                Signal::derive(move || t_string!(i18n, projects.topics.multiplayer)),
-                Signal::derive(move || "42"),
-            ],
-            github_link: "https://github.com/Arcanovax/TAP".to_string(),
-        },
-        Project {
-            name: "Chip8".to_string(),
-            role: Signal::derive(move || t_string!(i18n, projects.chip8.role)),
-            description: Signal::derive(move || t_string!(i18n, projects.chip8.description)),
-            techs: vec!["Rust".to_string()],
-            topics: vec![
-                Signal::derive(move || t_string!(i18n, projects.topics.emulation)),
-                Signal::derive(move || t_string!(i18n, projects.topics.low_level)),
-            ],
-            github_link: "https://github.com/relaforg/chip8".to_string(),
-        },
-        Project {
-            name: "A Maze Ing".to_string(),
-            role: Signal::derive(move || t_string!(i18n, projects.amazeing.role)),
-            description: Signal::derive(move || t_string!(i18n, projects.amazeing.description)),
-            techs: vec!["Python".to_string()],
-            topics: vec![
-                Signal::derive(move || t_string!(i18n, projects.topics.graphic)),
-                Signal::derive(move || "42"),
-            ],
-            github_link: "https://github.com/relaforg/a_maze_ing".to_string(),
-        },
-    ]
+    HashMap::from([
+        (
+            "TAP",
+            Project {
+                name: "The Answer Protocol".to_string(),
+                role: Signal::derive(move || t_string!(i18n, projects.tap.role)),
+                description: Signal::derive(move || t_string!(i18n, projects.tap.description)),
+                techs: vec!["Rust".to_string()],
+                topics: vec![
+                    Signal::derive(move || t_string!(i18n, projects.topics.network)),
+                    Signal::derive(move || t_string!(i18n, projects.topics.game)),
+                    Signal::derive(move || t_string!(i18n, projects.topics.multiplayer)),
+                    Signal::derive(move || "42"),
+                ],
+                github_link: "https://github.com/Arcanovax/TAP".to_string(),
+            },
+        ),
+        (
+            "chip8",
+            Project {
+                name: "Chip8".to_string(),
+                role: Signal::derive(move || t_string!(i18n, projects.chip8.role)),
+                description: Signal::derive(move || t_string!(i18n, projects.chip8.description)),
+                techs: vec!["Rust".to_string()],
+                topics: vec![
+                    Signal::derive(move || t_string!(i18n, projects.topics.emulation)),
+                    Signal::derive(move || t_string!(i18n, projects.topics.low_level)),
+                ],
+                github_link: "https://github.com/relaforg/chip8".to_string(),
+            },
+        ),
+        (
+            "amazeing",
+            Project {
+                name: "A Maze Ing".to_string(),
+                role: Signal::derive(move || t_string!(i18n, projects.amazeing.role)),
+                description: Signal::derive(move || t_string!(i18n, projects.amazeing.description)),
+                techs: vec!["Python".to_string()],
+                topics: vec![
+                    Signal::derive(move || t_string!(i18n, projects.topics.graphic)),
+                    Signal::derive(move || "42"),
+                ],
+                github_link: "https://github.com/relaforg/a_maze_ing".to_string(),
+            },
+        ),
+    ])
 }
 
 #[component]
@@ -66,7 +78,7 @@ pub fn Projects() -> impl IntoView {
                 .into_iter()
                 .map(|n| {
                     view! {
-                        <ProjectView project=n />
+                        <ProjectView project=n.1 />
                         <Hr />
                     }
                 })

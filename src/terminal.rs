@@ -4,7 +4,7 @@ use leptos::{
     prelude::*,
 };
 
-use crate::{contact::LINKS, terminal::Command::NotFound};
+use crate::{contact::LINKS, projects::get_projects, terminal::Command::NotFound};
 
 #[derive(Clone)]
 enum Command {
@@ -12,6 +12,9 @@ enum Command {
     Fetch,
     NotFound(String),
     Contact,
+    Projects,
+    Cat(String),
+    Help,
 }
 
 impl Command {
@@ -21,6 +24,9 @@ impl Command {
             "clear" => Self::Clear,
             "fetch" => Self::Fetch,
             "contact" => Self::Contact,
+            "projects" => Self::Projects,
+            "cat" => Self::Cat(command[1].to_string()),
+            "help" => Self::Help,
             _ => NotFound(str.to_string()),
         }
     }
@@ -125,12 +131,15 @@ fn TerminalContent(entries: ReadSignal<Vec<Entry>>) -> impl IntoView {
                 let prompt = (!input.is_empty())
                     .then(|| {
 
-                        view! { <p class="text-accent-500 my-1">"➜ ~ "{input}</p> }
+                        view! {
+                            <p class="text-accent-500">
+                                "➜ ~ "<span class="text-fg">{input}</span>
+                            </p>
+                        }
                     });
-
                 view! {
-                    <div class="mx-5 my-2">
-                        {prompt}
+                    <div class="mx-5 text-sm">
+                        <p class="text-base my-1">{prompt}</p>
                         {match command {
                             Command::Clear => ().into_any(),
                             Command::NotFound(c) => {
@@ -138,6 +147,9 @@ fn TerminalContent(entries: ReadSignal<Vec<Entry>>) -> impl IntoView {
                             }
                             Command::Fetch => view! { <Fetch /> }.into_any(),
                             Command::Contact => view! { <Contact /> }.into_any(),
+                            Command::Projects => view! { <Projects /> }.into_any(),
+                            Command::Cat(arg) => view! { <Cat project=arg /> }.into_any(),
+                            Command::Help => view! { <Help /> }.into_any(),
                         }}
                     </div>
                 }
@@ -244,4 +256,55 @@ fn Contact() -> impl IntoView {
                 .collect_view()}
         </div>
     }
+}
+
+#[component]
+fn Projects() -> impl IntoView {
+    let projects = get_projects();
+
+    view! {
+        <div class="grid grid-cols-[auto_auto_1fr] gap-x-10 text-sm">
+            {projects
+                .into_iter()
+                .map(|(k, p)| {
+                    view! {
+                        <p>{k}</p>
+                        <p>{p.techs}</p>
+                        <p>
+                            {p
+                                .github_link
+                                .strip_prefix("https://")
+                                .unwrap_or(&p.github_link)
+                                .to_string()}
+                        </p>
+                    }
+                })
+                .collect_view()}
+        </div>
+    }
+}
+
+#[component]
+fn Cat(project: String) -> impl IntoView {
+    let mut projects = get_projects();
+
+    match projects.remove(project.as_str()) {
+        Some(p) => view! {
+            <div class="flex gap-10">
+                <p class="text-accent-500">{p.name}</p>
+                <p class="text-accent-500">"["{p.techs}"]"</p>
+            </div>
+            <p class="my-1">{p.description}</p>
+            <a target="_blank" class="text-neutral-500" href=p.github_link.clone()>
+                {p.github_link.strip_prefix("https://")}
+            </a>
+        }
+        .into_any(),
+        None => view! { <p>{project}" n'existe pas"</p> }.into_any(),
+    }
+}
+
+#[component]
+fn Help() -> impl IntoView {
+    view! {}
 }
