@@ -306,5 +306,26 @@ fn Cat(project: String) -> impl IntoView {
 
 #[component]
 fn Help() -> impl IntoView {
-    view! {}
+    view! {
+        <div class="grid grid-cols-[auto_1fr] gap-x-10">
+            <p>"help"</p>
+            <p>"Affiche la liste des commandes"</p>
+
+            <p>"clear"</p>
+            <p>"Nétoie le terminal"</p>
+
+            <p>"fetch"</p>
+            <p>"Affiche la présentation"</p>
+
+            <p>"contact"</p>
+            <p>"Affiche les informations de contact"</p>
+
+            <p>"projects"</p>
+            <p>"Affiche les projets mis en avant"</p>
+
+            <p>"cat <project>"</p>
+            <p>"Affiche les détail du projet"</p>
+
+        </div>
+    }
 }
