@@ -13,7 +13,9 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let cfg = Config::new("fr")?
         .add_locale("en")?
-        .add_namespaces(["header", "projects", "activity", "contact", "date"])?
+        .add_namespaces([
+            "header", "projects", "activity", "contact", "date", "commands",
+        ])?
         .parse_options(ParseOptions::new().interpolate_display(true));
 
     let translations_infos = TranslationsInfos::parse(cfg)?;

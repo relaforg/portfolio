@@ -1,10 +1,10 @@
+use crate::{contact::LINKS, i18n::use_i18n, projects::get_projects, terminal::Command::NotFound};
 use leptos::{
     ev::SubmitEvent,
     html::{Div, Input},
     prelude::*,
 };
-
-use crate::{contact::LINKS, projects::get_projects, terminal::Command::NotFound};
+use leptos_i18n::{t, t_string};
 
 #[derive(Clone)]
 enum Command {
@@ -122,6 +122,7 @@ pub fn Terminal() -> impl IntoView {
 
 #[component]
 fn TerminalContent(entries: ReadSignal<Vec<Entry>>) -> impl IntoView {
+    let i18n = use_i18n();
     view! {
         <For
             each=move || entries.get()
@@ -143,7 +144,8 @@ fn TerminalContent(entries: ReadSignal<Vec<Entry>>) -> impl IntoView {
                         {match command {
                             Command::Clear => ().into_any(),
                             Command::NotFound(c) => {
-                                view! { <p>"rsh: command not found: "{c}</p> }.into_any()
+                                view! { <p>{t!(i18n, commands.not_found, command = c)}</p> }
+                                    .into_any()
                             }
                             Command::Fetch => view! { <Fetch /> }.into_any(),
                             Command::Contact => view! { <Contact /> }.into_any(),
@@ -209,31 +211,48 @@ fn AsciiArt() -> impl IntoView {
 
 #[component]
 fn Fetch() -> impl IntoView {
-    let info = [
-        ("user", "Rémi Laforgue"),
-        ("title", "étudiant · 42Lyon"),
-        ("langs", "Rust · C · Python"),
-        ("editor", "neovim"),
-        ("os", "Linux"),
-        ("city", "Lyon, FR"),
-    ];
+    let i18n = use_i18n();
     view! {
         <div class="flex gap-6 items-end">
             <AsciiArt />
             <div class="grid grid-cols-[auto_1fr] gap-x-10 text-sm">
                 {move || {
-                    info.map(|i| {
-                        view! {
-                            <p>{i.0}</p>
-                            <p>{i.1}</p>
-                        }
-                    })
+                    [
+                        (
+                            t_string!(i18n, commands.fetch.user.label),
+                            t_string!(i18n, commands.fetch.user.value),
+                        ),
+                        (
+                            t_string!(i18n, commands.fetch.title.label),
+                            t_string!(i18n, commands.fetch.title.value),
+                        ),
+                        (
+                            t_string!(i18n, commands.fetch.langs.label),
+                            t_string!(i18n, commands.fetch.langs.value),
+                        ),
+                        (
+                            t_string!(i18n, commands.fetch.editor.label),
+                            t_string!(i18n, commands.fetch.editor.value),
+                        ),
+                        (
+                            t_string!(i18n, commands.fetch.os.label),
+                            t_string!(i18n, commands.fetch.os.value),
+                        ),
+                        (
+                            t_string!(i18n, commands.fetch.city.label),
+                            t_string!(i18n, commands.fetch.city.value),
+                        ),
+                    ]
+                        .map(|(label, value)| {
+                            view! {
+                                <p>{label}</p>
+                                <p>{value}</p>
+                            }
+                        })
                 }}
             </div>
         </div>
-        <p class="text-sm text-neutral-500 mt-3">
-            "➜ Tapez `help` pour voir la liste des commandes"
-        </p>
+        <p class="text-sm text-neutral-500 mt-3">{t!(i18n, commands.fetch.hint)}</p>
     }
 }
 
@@ -286,6 +305,7 @@ fn Projects() -> impl IntoView {
 
 #[component]
 fn Cat(project: String) -> impl IntoView {
+    let i18n = use_i18n();
     let mut projects = get_projects();
 
     match projects.remove(project.as_str()) {
@@ -300,32 +320,49 @@ fn Cat(project: String) -> impl IntoView {
             </a>
         }
         .into_any(),
-        None => view! { <p>{project}" n'existe pas"</p> }.into_any(),
+        None => view! { <p>{t!(i18n, commands.cat.not_found, name = project)}</p> }.into_any(),
     }
 }
 
 #[component]
 fn Help() -> impl IntoView {
+    let i18n = use_i18n();
     view! {
         <div class="grid grid-cols-[auto_1fr] gap-x-10">
-            <p>"help"</p>
-            <p>"Affiche la liste des commandes"</p>
-
-            <p>"clear"</p>
-            <p>"Nétoie le terminal"</p>
-
-            <p>"fetch"</p>
-            <p>"Affiche la présentation"</p>
-
-            <p>"contact"</p>
-            <p>"Affiche les informations de contact"</p>
-
-            <p>"projects"</p>
-            <p>"Affiche les projets mis en avant"</p>
-
-            <p>"cat <project>"</p>
-            <p>"Affiche les détail du projet"</p>
-
+            {move || {
+                [
+                    (
+                        t_string!(i18n, commands.help.help.label),
+                        t_string!(i18n, commands.help.help.value),
+                    ),
+                    (
+                        t_string!(i18n, commands.help.clear.label),
+                        t_string!(i18n, commands.help.clear.value),
+                    ),
+                    (
+                        t_string!(i18n, commands.help.fetch.label),
+                        t_string!(i18n, commands.help.fetch.value),
+                    ),
+                    (
+                        t_string!(i18n, commands.help.contact.label),
+                        t_string!(i18n, commands.help.contact.value),
+                    ),
+                    (
+                        t_string!(i18n, commands.help.projects.label),
+                        t_string!(i18n, commands.help.projects.value),
+                    ),
+                    (
+                        t_string!(i18n, commands.help.cat.label),
+                        t_string!(i18n, commands.help.cat.value),
+                    ),
+                ]
+                    .map(|(command, description)| {
+                        view! {
+                            <p>{command}</p>
+                            <p>{description}</p>
+                        }
+                    })
+            }}
         </div>
     }
 }

@@ -1,0 +1,59 @@
+{
+	"fetch": {
+		"user": {
+			"label": "user",
+			"value": "Rémi LAFORGUE"
+		},
+		"title": {
+			"label": "status",
+			"value": "student · 42Lyon"
+		},
+		"langs": {
+			"label": "langs",
+			"value": "Rust · C · Python"
+		},
+		"editor": {
+			"label": "editor",
+			"value": "neovim"
+		},
+		"os": {
+			"label": "os",
+			"value": "Linux"
+		},
+		"city": {
+			"label": "city",
+			"value": "Lyon, FR"
+		},
+		"hint": "➜ Type `help` to list the available commands"
+	},
+	"help": {
+		"help": {
+			"label": "help",
+			"value": "Lists the available commands"
+		},
+		"clear": {
+			"label": "clear",
+			"value": "Clears the terminal"
+		},
+		"fetch": {
+			"label": "fetch",
+			"value": "Shows the introduction"
+		},
+		"contact": {
+			"label": "contact",
+			"value": "Shows the contact information"
+		},
+		"projects": {
+			"label": "projects",
+			"value": "Shows the featured projects"
+		},
+		"cat": {
+			"label": "cat [project]",
+			"value": "Shows the project details"
+		}
+	},
+	"cat": {
+		"not_found": "{{ name }} does not exist"
+	},
+	"not_found": "rsh: command not found: {{ command }}"
+}
