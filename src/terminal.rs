@@ -11,6 +11,7 @@ enum Command {
     Clear,
     Fetch,
     NotFound(String),
+    InvalidArgs(String),
     Contact,
     Projects,
     Cat(String),
@@ -21,12 +22,13 @@ impl Command {
     pub fn parse(str: &str) -> Self {
         let command: Vec<&str> = str.split_whitespace().collect();
         match command.as_slice() {
-            ["clear"] => Self::Clear,
-            ["fetch"] => Self::Fetch,
-            ["contact"] => Self::Contact,
-            ["projects"] => Self::Projects,
-            ["cat", name] => Self::Cat(name.to_string()),
-            ["help"] => Self::Help,
+            ["clear", ..] => Self::Clear,
+            ["fetch", ..] => Self::Fetch,
+            ["contact", ..] => Self::Contact,
+            ["projects", ..] => Self::Projects,
+            ["cat", name, ..] => Self::Cat(name.to_string()),
+            ["help", ..] => Self::Help,
+            [cmd @ "cat"] => Self::InvalidArgs(cmd.to_string()),
             _ => Self::NotFound(str.to_string()),
         }
     }
@@ -185,6 +187,10 @@ fn TerminalContent(entries: ReadSignal<Vec<Entry>>) -> impl IntoView {
                             Command::Projects => view! { <Projects /> }.into_any(),
                             Command::Cat(arg) => view! { <Cat project=arg /> }.into_any(),
                             Command::Help => view! { <Help /> }.into_any(),
+                            Command::InvalidArgs(c) => {
+                                view! { <p>{t!(i18n, commands.invalid_arg, command = c)}</p> }
+                                    .into_any()
+                            }
                         }}
                     </div>
                 }

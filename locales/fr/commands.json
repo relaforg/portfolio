@@ -55,5 +55,6 @@
 	"cat": {
 		"not_found": "{{ name }} n'existe pas"
 	},
-	"not_found": "rsh: cette commande n'existe pas: {{ command }}"
+	"not_found": "rsh: cette commande n'existe pas: {{ command }}",
+	"invalid_arg": "rsh: {{ command }}: argument invalide"
 }
