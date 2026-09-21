@@ -86,7 +86,7 @@ fn format_date(date: Option<String>) -> Signal<String> {
 #[component]
 fn RepoView(repo: Repo) -> impl IntoView {
     view! {
-        <li class="p-1 col-span-4 grid grid-cols-subgrid items-baseline gap-x-8 hover:bg-surface text-sm">
+        <li class="p-1 col-span-4 grid grid-cols-subgrid items-baseline gap-x-8 hover:bg-surface/25 text-sm">
             <a
                 rel="external noopener noreferrer"
                 target="_blank"
