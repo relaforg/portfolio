@@ -1,6 +1,6 @@
-use crate::{contact::LINKS, i18n::use_i18n, projects::get_projects, terminal::Command::NotFound};
+use crate::{contact::LINKS, i18n::use_i18n, projects::get_projects};
 use leptos::{
-    ev::SubmitEvent,
+    ev::{KeyboardEvent, SubmitEvent},
     html::{Div, Input},
     prelude::*,
 };
@@ -20,14 +20,14 @@ enum Command {
 impl Command {
     pub fn parse(str: &str) -> Self {
         let command: Vec<&str> = str.split_whitespace().collect();
-        match command[0] {
-            "clear" => Self::Clear,
-            "fetch" => Self::Fetch,
-            "contact" => Self::Contact,
-            "projects" => Self::Projects,
-            "cat" => Self::Cat(command[1].to_string()),
-            "help" => Self::Help,
-            _ => NotFound(str.to_string()),
+        match command.as_slice() {
+            ["clear"] => Self::Clear,
+            ["fetch"] => Self::Fetch,
+            ["contact"] => Self::Contact,
+            ["projects"] => Self::Projects,
+            ["cat", name] => Self::Cat(name.to_string()),
+            ["help"] => Self::Help,
+            _ => Self::NotFound(str.to_string()),
         }
     }
 }
@@ -46,6 +46,8 @@ pub fn Terminal() -> impl IntoView {
     let output = NodeRef::<Div>::new();
     let command = signal(String::new());
     let (entries, set_entries) = signal(Vec::<Entry>::new());
+    let (history, set_history) = signal(Vec::<String>::new());
+    let (cursor, set_cursor) = signal(None::<usize>);
     set_entries.update(|v| {
         v.push(Entry {
             id: 0,
@@ -59,6 +61,8 @@ pub fn Terminal() -> impl IntoView {
         if command.0.get().trim().is_empty() {
             return;
         }
+
+        set_history.update(|v| v.push(command.0.get().trim().to_string()));
 
         match Command::parse(&command.0.get()) {
             Command::Clear => set_entries.update(|v| v.clear()).into_any().into_any(),
@@ -79,6 +83,34 @@ pub fn Terminal() -> impl IntoView {
     let focus_on_click = move |_| {
         if let Some(node) = input_ref.get() {
             let _ = node.focus();
+        }
+    };
+
+    let history = move |ev: KeyboardEvent| {
+        let len = history.read().len();
+        if len == 0 {
+            return;
+        }
+
+        let next = match ev.key().as_str() {
+            "ArrowUp" => match cursor.get() {
+                None => Some(len - 1),
+                Some(n) => Some(n.saturating_sub(1)),
+            },
+            "ArrowDown" => match cursor.get() {
+                None => return,
+                Some(n) if n + 1 < len => Some(n + 1),
+                Some(_) => None,
+            },
+            _ => return,
+        };
+
+        ev.prevent_default();
+        set_cursor.set(next);
+
+        *command.1.write() = match cursor.get() {
+            None => String::new(),
+            Some(n) => history.get()[n].clone(),
         }
     };
 
@@ -112,6 +144,7 @@ pub fn Terminal() -> impl IntoView {
                         type="text"
                         class="focus:outline-hidden w-full"
                         bind:value=command
+                        on:keydown=history
                     />
                 </form>
                 <div class="w-1.5 h-3 bg-accent-500 animate-blink"></div>
