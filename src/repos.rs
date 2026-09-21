@@ -95,7 +95,7 @@ fn RepoView(repo: Repo) -> impl IntoView {
             >
                 {repo.name}
             </a>
-            <p class="truncate">{repo.description}</p>
+            <p class="truncate hidden md:block">{repo.description}</p>
             <span class="text-neutral-500 justify-self-end">
                 {repo.language.unwrap_or_else(|| "-".to_string())}
             </span>

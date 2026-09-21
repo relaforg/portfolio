@@ -92,7 +92,7 @@ fn ProjectView(project: Project) -> impl IntoView {
     view! {
         <div class="my-10">
             <div class="flex justify-between items-end my-5">
-                <div class="flex items-end gap-2">
+                <div class="flex sm:items-end sm:gap-2 sm:flex-row flex-col">
                     <h3 class="text-3xl">{project.name}</h3>
                     <p class="text-neutral-500">{project.role}</p>
                 </div>

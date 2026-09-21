@@ -142,7 +142,7 @@ fn Sidebar() -> impl IntoView {
 
     view! {
         <nav
-            class="ml-5 fixed -translate-y-1/2 flex flex-col gap-1 text-neutral-500"
+            class="ml-5 fixed -translate-y-1/2 hidden flex-col gap-1 text-neutral-500 xl:flex"
             style=("top", move || format!("{}px", position().to_string()))
         >
             <a href="#projects" class="hover:text-accent-500">
@@ -179,7 +179,7 @@ fn Options() -> impl IntoView {
 
     view! {
         <Html attr:data-theme=get_theme />
-        <div class="p-6 flex justify-between items-center fixed bottom-1 right-1 z-10">
+        <div class="p-6 flex justify-between items-center absolute xl:fixed bottom-1 right-1 z-10">
             <div class="flex items-center gap-5">
                 <button
                     on:click=toggle_locale

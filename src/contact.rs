@@ -38,8 +38,7 @@ pub fn Contact() -> impl IntoView {
 
     view! {
         <section id="contact" class="my-3">
-            <h2 class="text-neutral-500">"// CONTACT"</h2>
-            <div class="grid grid-cols-2 gap-5">
+            <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <div>
                     <h3 class="text-3xl">{t!(i18n, contact.subtitle)}</h3>
                     <p class="text-sm my-5 text-neutral-500">{t!(i18n, contact.description)}</p>
