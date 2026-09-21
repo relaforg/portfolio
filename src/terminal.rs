@@ -129,6 +129,15 @@ pub fn Terminal() -> impl IntoView {
         }
     });
 
+    let (caret, set_caret) = signal(0u32);
+    let sync_caret = move || {
+        if let Some(node) = input_ref.get()
+            && let Ok(Some(pos)) = node.selection_start()
+        {
+            set_caret.set(pos);
+        }
+    };
+
     view! {
         <div
             on:click=focus_on_click
@@ -140,16 +149,19 @@ pub fn Terminal() -> impl IntoView {
             </div>
             <div class="mx-5 my-2 flex items-center shrink-0">
                 <span class="text-accent-500">"➜ ~"</span>
-                <form on:submit=command_handler class="mx-2 flex-1">
+                <form on:submit=command_handler class="mx-2 flex-1 relative">
                     <input
                         node_ref=input_ref
                         type="text"
-                        class="focus:outline-hidden w-full"
+                        class="focus:outline-hidden w-full caret-transparent"
                         bind:value=command
                         on:keydown=history
+                        on:input=move |_| sync_caret()
+                        on:keyup=move |_| sync_caret()
+                        on:click=move |_| sync_caret()
                     />
+                    <div class="absolute top-1/2 -translate-y-1/2 w-2 h-4 bg-accent-500 animate-blink" style:left=move || format!("{}ch", caret.get())></div>
                 </form>
-                <div class="w-1.5 h-3 bg-accent-500 animate-blink"></div>
             </div>
         </div>
     }
