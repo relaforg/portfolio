@@ -1,34 +1,111 @@
 use crate::i18n::*;
 use crate::{contact::Contact, projects::Projects, repos::Repos, terminal::Terminal};
+use leptos::ev::MouseEvent;
 use leptos::prelude::*;
 use leptos_meta::Html;
 use leptos_use::{use_window_scroll, use_window_size, UseWindowSizeReturn};
 
 #[component]
 pub fn App() -> impl IntoView {
+    let (display, set_display) = signal("terminal");
+    let toggle_display = move |_: MouseEvent| match display.get() {
+        "terminal" => set_display.set("classic"),
+        _ => set_display.set("terminal"),
+    };
     view! {
         <Html attr:class="snap-y snap-proximity" />
         <I18nContextProvider>
             <BgAnim />
             <Sidebar />
             <Options />
+            <DisplaySlider on_click=toggle_display view=display />
             <div class="mx-auto max-w-250 px-4">
-                <div class="min-h-dvh flex flex-col snap-start">
-                    <div class="flex-1 flex items-center">
-                        <Terminal />
-                    </div>
-                    <div class="flex justify-center">
-                        <Chevron />
-                    </div>
-                </div>
-                <Projects />
-                <Repos />
-                // <Hr />
-                <Contact />
-                <Hr />
-                <Footer />
+                <Show
+                    when=move || display.get() == "terminal"
+                    fallback=|| view! { <ClassicView /> }
+                >
+                    <TerminalView />
+                </Show>
             </div>
         </I18nContextProvider>
+    }
+}
+
+#[component]
+fn DisplaySlider(
+    on_click: impl FnMut(MouseEvent) + 'static,
+    view: ReadSignal<&'static str>,
+) -> impl IntoView {
+    let i18n = use_i18n();
+
+    view! {
+        <div class="fixed top-[18px] right-5 z-[21] flex items-center gap-2.5">
+            <span class="text-xs text-neutral-500">{t!(i18n, header.display)}</span>
+
+            <div
+                role="group"
+                aria-label="Choisir l'affichage"
+                class="flex items-center gap-0.5 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-[3px] text-[13px]"
+                on:click=on_click
+            >
+
+                <button
+                    type="button"
+                    class=move || {
+                        format!(
+                            "rounded-md px-3 py-[5px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] {}",
+                            if view.get() == "terminal" {
+                                "bg-accent-700 text-accent-100"
+                            } else {
+                                "bg-transparent text-neutral-400 hover:text-[var(--color-text)]"
+                            },
+                        )
+                    }
+                >
+                    {t!(i18n, header.terminal)}
+                </button>
+
+                <button
+                    type="button"
+                    class=move || {
+                        format!(
+                            "rounded-md px-3 py-[5px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] {}",
+                            if view.get() == "classic" {
+                                "bg-accent-700 text-accent-100"
+                            } else {
+                                "bg-transparent text-neutral-400 hover:text-[var(--color-text)]"
+                            },
+                        )
+                    }
+                >
+                    {t!(i18n, header.classic)}
+                </button>
+            </div>
+        </div>
+    }
+}
+
+#[component]
+fn TerminalView() -> impl IntoView {
+    view! {
+        <div class="min-h-dvh flex flex-col snap-start">
+            <div class="flex-1 flex items-center">
+                <Terminal />
+            </div>
+        </div>
+    }
+}
+
+#[component]
+fn ClassicView() -> impl IntoView {
+    view! {
+        <div class="mt-15">
+            <Projects />
+            <Repos />
+            <Contact />
+            <Hr />
+            <Footer />
+        </div>
     }
 }
 
@@ -46,29 +123,6 @@ fn BgAnim() -> impl IntoView {
             rounded-full opacity-10 blur-[110px] will-change-transform animate-drift-c
             bg-[radial-gradient(circle_at_50%_50%,#adadf3_0%,transparent_70%)]"></div>
         </div>
-    }
-}
-
-#[component]
-fn Chevron() -> impl IntoView {
-    view! {
-        <a href="#projects">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="size-10 mb-10 text-neutral-300 hover:text-accent-500"
-            >
-                <path d="m7 6 5 5 5-5" />
-                <path d="m7 13 5 5 5-5" />
-            </svg>
-        </a>
     }
 }
 

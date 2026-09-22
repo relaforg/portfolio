@@ -1,4 +1,7 @@
 {
 	"projects": "projects",
-	"activity": "activity"
+	"activity": "activity",
+	"display": "Display",
+	"classic": "Classic",
+	"terminal": "Terminal"
 }
