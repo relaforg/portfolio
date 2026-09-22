@@ -13,6 +13,7 @@ leptos = { version = "0.8.20", features = ["csr"] }
 leptos-use = "0.19.2"
 leptos_i18n = { version = "0.6.2", features = ["cookie", "csr", "plurals"] }
 leptos_meta = "0.8.6"
+leptos_router = "0.8.15"
 serde = "1.0.229"
 
 

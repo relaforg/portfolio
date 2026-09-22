@@ -1,42 +1,38 @@
 use crate::i18n::*;
 use crate::{contact::Contact, projects::Projects, repos::Repos, terminal::Terminal};
-use leptos::ev::MouseEvent;
 use leptos::prelude::*;
 use leptos_meta::Html;
+use leptos_router::components::{Route, Router, Routes, A};
+use leptos_router::hooks::use_location;
+use leptos_router::path;
 use leptos_use::{use_window_scroll, use_window_size, UseWindowSizeReturn};
 
 #[component]
 pub fn App() -> impl IntoView {
-    let (display, set_display) = signal("terminal");
-    let toggle_display = move |_: MouseEvent| match display.get() {
-        "terminal" => set_display.set("classic"),
-        _ => set_display.set("terminal"),
-    };
     view! {
         <Html attr:class="snap-y snap-proximity" />
         <I18nContextProvider>
-            <BgAnim />
-            <Sidebar />
-            <Options />
-            <DisplaySlider on_click=toggle_display view=display />
-            <div class="mx-auto max-w-250 px-4">
-                <Show
-                    when=move || display.get() == "terminal"
-                    fallback=|| view! { <ClassicView /> }
-                >
-                    <TerminalView />
-                </Show>
-            </div>
+            <Router>
+                <BgAnim />
+                <Sidebar />
+                <Options />
+                <DisplaySlider />
+                <div class="mx-auto max-w-250 px-4">
+                    <Routes fallback=TerminalView>
+                        <Route path=path!("/terminal") view=TerminalView />
+                        <Route path=path!("/classic") view=ClassicView />
+                    </Routes>
+                </div>
+            </Router>
         </I18nContextProvider>
     }
 }
 
 #[component]
-fn DisplaySlider(
-    on_click: impl FnMut(MouseEvent) + 'static,
-    view: ReadSignal<&'static str>,
-) -> impl IntoView {
+fn DisplaySlider() -> impl IntoView {
     let i18n = use_i18n();
+    let pathname = use_location().pathname;
+    let is_classic = move || pathname.get() == "/classic";
 
     view! {
         <div class="fixed top-[18px] right-5 z-[21] flex items-center gap-2.5">
@@ -46,15 +42,14 @@ fn DisplaySlider(
                 role="group"
                 aria-label="Choisir l'affichage"
                 class="flex items-center gap-0.5 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] p-[3px] text-[13px]"
-                on:click=on_click
             >
 
-                <button
-                    type="button"
-                    class=move || {
+                <A
+                    href="/terminal"
+                    attr:class=move || {
                         format!(
                             "rounded-md px-3 py-[5px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] {}",
-                            if view.get() == "terminal" {
+                            if !is_classic() {
                                 "bg-accent-700 text-accent-100"
                             } else {
                                 "bg-transparent text-neutral-400 hover:text-[var(--color-text)]"
@@ -63,14 +58,14 @@ fn DisplaySlider(
                     }
                 >
                     {t!(i18n, header.terminal)}
-                </button>
+                </A>
 
-                <button
-                    type="button"
-                    class=move || {
+                <A
+                    href="/classic"
+                    attr:class=move || {
                         format!(
                             "rounded-md px-3 py-[5px] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] {}",
-                            if view.get() == "classic" {
+                            if is_classic() {
                                 "bg-accent-700 text-accent-100"
                             } else {
                                 "bg-transparent text-neutral-400 hover:text-[var(--color-text)]"
@@ -79,7 +74,7 @@ fn DisplaySlider(
                     }
                 >
                     {t!(i18n, header.classic)}
-                </button>
+                </A>
             </div>
         </div>
     }
