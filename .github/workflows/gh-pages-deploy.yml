@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write # for committing to gh-pages branch.
+  #contents: write # for committing to gh-pages branch.
   pages: write
   id-token: write
 
@@ -56,8 +56,8 @@ jobs:
 
       # Copy index.html to 404.html for SPA routing
       # Will allow routing to work if client enters from any route
-      # - name: Copy index.html to 404.html
-      #   run: cp dist/index.html dist/404.html
+      - name: Copy index.html to 404.html
+        run: cp dist/index.html dist/404.html
 
       # Deploy to gh-pages branch
       # - name: Deploy 🚀
