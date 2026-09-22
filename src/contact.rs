@@ -1,7 +1,7 @@
 use leptos::prelude::*;
 use leptos_i18n::t;
 
-use crate::i18n::use_i18n;
+use crate::{app::Hr, i18n::use_i18n};
 
 pub struct SocialLink {
     pub label: &'static str,
@@ -37,7 +37,9 @@ pub fn Contact() -> impl IntoView {
     let i18n = use_i18n();
 
     view! {
-        <section id="contact" class="my-3">
+        <section id="contact" class="mb-3 mt-10">
+            <h2 class="text-neutral-500">"// CONTACT"</h2>
+            <Hr />
             <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
                 <div>
                     <h3 class="text-3xl">{t!(i18n, contact.subtitle)}</h3>

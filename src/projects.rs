@@ -73,13 +73,13 @@ pub fn Projects() -> impl IntoView {
     view! {
         <section id="projects" class="my-3">
             <h2 class="text-neutral-500">"// " {t!(i18n, projects.title)}</h2>
-            <Hr />
+            // <Hr />
             {projects
                 .into_iter()
                 .map(|n| {
                     view! {
-                        <ProjectView project=n.1 />
                         <Hr />
+                        <ProjectView project=n.1 />
                     }
                 })
                 .collect_view()}

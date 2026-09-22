@@ -23,7 +23,7 @@ pub fn App() -> impl IntoView {
                 </div>
                 <Projects />
                 <Repos />
-                <Hr />
+                // <Hr />
                 <Contact />
                 <Hr />
                 <Footer />

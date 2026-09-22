@@ -5,7 +5,7 @@ use leptos::prelude::*;
 use leptos_i18n::{t, t_string};
 use serde::Deserialize;
 
-use crate::i18n::use_i18n;
+use crate::{app::Hr, i18n::use_i18n};
 
 #[derive(Deserialize, Clone)]
 struct Repo {
@@ -29,8 +29,9 @@ pub fn Repos() -> impl IntoView {
     let i18n = use_i18n();
     let repos = LocalResource::new(fetch_repos);
     view! {
-        <section id="repos" class="mb-3 mt-5">
+        <section id="repos" class="mb-3 mt-10">
             <h2 class="text-neutral-500">"// " {t!(i18n, activity.title)}</h2>
+            <Hr />
             <Suspense fallback=move || {
                 view! { <p>t!(i18n, activity.loading)</p> }
             }>
