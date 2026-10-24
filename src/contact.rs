@@ -28,7 +28,7 @@ pub const LINKS: [SocialLink; 4] = [
     SocialLink {
         label: "cv",
         username: "cv.pdf",
-        link: "test.pdf",
+        link: "cv.pdf",
     },
 ];
 
